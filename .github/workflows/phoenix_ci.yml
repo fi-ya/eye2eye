@@ -31,8 +31,8 @@ jobs:
       
       - name: Install Dependencies    
         run: mix deps.get
-        run: mix deps.compile
-        run: cd assets && yarn install --frozen-lockfile
+      - run: mix deps.compile
+      - run: cd assets && yarn install --frozen-lockfile
       
       - name: Check Code Format
         run: mix format --check-formatted
