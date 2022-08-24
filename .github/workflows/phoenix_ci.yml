@@ -1,0 +1,44 @@
+name: Elixir CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        ports: ['5432:5432']
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+     
+      - name: Setup elixir
+        uses: actions/setup-elixir@v1
+        with:
+          elixir-version: '1.12'
+          otp-version: '22.3'
+      
+      - name: Install Dependencies    
+        run: mix deps.get
+        run: mix deps.compile
+        run: cd assets && yarn install --frozen-lockfile
+      
+      - name: Check Code Format
+        run: mix format --check-formatted
+      
+      - name: Unit Tests
+        run: mix test
+        env:
+          DB_PASSWORD: postgres
+          DB_HOST: postgres
