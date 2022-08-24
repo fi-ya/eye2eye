@@ -35,8 +35,8 @@ jobs:
           mix deps.compile
           cd assets && yarn install --frozen-lockfile
       
-      - name: Check Code Format
-        run: mix format --check-formatted
+      # - name: Check Code Format
+      #   run: mix format --check-formatted
       
       - name: Unit Tests
         run: mix test
