@@ -9,6 +9,10 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir: ['1.12']
+        otp: ['23.3.1']
     services:
       postgres:
         image: postgres:latest
@@ -21,15 +25,26 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Github repo
+        uses: actions/checkout@v2
      
-      - name: Setup elixir
+      - name: Sets up an Erlang/OTP environment
         uses: erlef/setup-beam@v1
         with:
-          elixir-version: '1.12'
-          otp-version: '22.3'
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
       
-      - name: Install Dependencies
+      - name: Retrieve cached dependencies
+        uses: actions/cache@v2
+        id: mix-cache
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+
+      - name: Install Mix Dependencies
+        if: steps.mix-cache.outputs.cache-hit != 'true'
         run: |
           mix deps.get
           mix deps.compile
@@ -38,8 +53,8 @@ jobs:
       # - name: Check Code Format
       #   run: mix format --check-formatted
       
-      - name: Unit Tests
-        run: mix test
+      - name: Run Unit Tests
+        run: mix test --trace --slowest 10
         env:
           DB_PASSWORD: postgres
           DB_HOST: postgres
