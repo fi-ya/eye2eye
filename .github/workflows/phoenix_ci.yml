@@ -51,7 +51,7 @@ jobs:
           cd assets && yarn install --frozen-lockfile
       
       - name: Check Code Format
-        run: mix format --check-formatted
+        run: mix format
       
       - name: Run Unit Tests
         run: mix test --trace --slowest 10
