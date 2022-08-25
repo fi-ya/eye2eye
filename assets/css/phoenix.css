@@ -62,15 +62,15 @@ header {
 header section {
   align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
 }
-header section :first-child {
+/* header section :first-child {
   order: 2;
 }
 header section :last-child {
   order: 1;
-}
+} */
 header nav ul,
 header nav li {
   margin: 0;
@@ -79,14 +79,48 @@ header nav li {
   text-align: right;
   white-space: nowrap;
 }
-header nav ul {
+/* header nav ul {
   margin: 1rem;
   margin-top: 0;
-}
-header nav a {
+} */
+/* header nav a {
   display: block;
+} */
+
+.row__nav {
+  display: flex;
+  justify-content: flex-end;
+  width: 50vw;
+  gap: 1rem;
+  margin: 0 auto;
 }
 
+.margin-none {
+  margin: 0;
+}
+
+.font-sm{
+  font-size: 1rem;
+}
+
+.gap-sm{
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.color{
+  color:#0069d9;
+}
+
+.font-black{
+  color:#000000;
+}
 @media (min-width: 40.0rem) { /* Small devices (landscape phones, 576px and up) */
   header section {
     flex-direction: row;
@@ -97,5 +131,10 @@ header nav a {
   .phx-logo {
     flex-basis: 527px;
     margin: 2rem 1rem;
+  }
+
+  .row__nav {
+    max-width: 60rem;
+    font-size: 2rem;
   }
 }
