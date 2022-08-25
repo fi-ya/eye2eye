@@ -32,3 +32,7 @@ eye2eye-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.vscode
+.idea
+.DS_Store
+.elixir_ls
