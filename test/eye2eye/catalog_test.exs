@@ -22,13 +22,13 @@ defmodule Eye2eye.CatalogTest do
 
     test "create_product/1 with valid data creates a product" do
       valid_attrs = %{
-        image_url: "some image_url",
+        image_url: "https://images.unsplash.com/photo",
         name: "some name",
         price: "120.50",
       }
 
       assert {:ok, %Product{} = product} = Catalog.create_product(valid_attrs)
-      assert product.image_url == "some image_url"
+      assert product.image_url == "https://images.unsplash.com/photo"
       assert product.name == "some name"
       assert product.price == Decimal.new("120.50")
     end
@@ -41,13 +41,13 @@ defmodule Eye2eye.CatalogTest do
       product = product_fixture()
 
       update_attrs = %{
-        image_url: "some updated image_url",
+        image_url: "https://images.unsplash.com/photo2",
         name: "some updated name",
         price: "456.70",
       }
 
       assert {:ok, %Product{} = product} = Catalog.update_product(product, update_attrs)
-      assert product.image_url == "some updated image_url"
+      assert product.image_url == "https://images.unsplash.com/photo2"
       assert product.name == "some updated name"
       assert product.price == Decimal.new("456.70")
     end
