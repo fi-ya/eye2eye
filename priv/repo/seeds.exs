@@ -29,10 +29,11 @@ for i <- 1..10 do
     "https://images.unsplash.com/photo-1483412468200-72182dbbc544?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1773&q=80",
     "https://images.unsplash.com/photo-1542629458-eaa56d608062?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1767&q=80"
   ]
+
   {:ok, _} =
     Catalog.create_product(%{
       name: "Product #{i}",
-      image_url: "#{Enum.at(img_url, i-1)}",
-      price: "#{100 + i}",
+      image_url: "#{Enum.at(img_url, i - 1)}",
+      price: "#{100 + i}"
     })
 end

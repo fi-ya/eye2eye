@@ -8,5 +8,4 @@ defmodule Eye2eyeWeb.ProductController do
     products = Catalog.list_products()
     render(conn, "index.html", products: products)
   end
-
 end

@@ -24,7 +24,7 @@ defmodule Eye2eye.CatalogTest do
       valid_attrs = %{
         image_url: "https://images.unsplash.com/photo",
         name: "some name",
-        price: "120.50",
+        price: "120.50"
       }
 
       assert {:ok, %Product{} = product} = Catalog.create_product(valid_attrs)
@@ -43,7 +43,7 @@ defmodule Eye2eye.CatalogTest do
       update_attrs = %{
         image_url: "https://images.unsplash.com/photo2",
         name: "some updated name",
-        price: "456.70",
+        price: "456.70"
       }
 
       assert {:ok, %Product{} = product} = Catalog.update_product(product, update_attrs)

@@ -13,7 +13,7 @@ defmodule Eye2eye.CatalogFixtures do
       |> Enum.into(%{
         image_url: "some image_url",
         name: "some name",
-        price: "120.50",
+        price: "120.50"
       })
       |> Eye2eye.Catalog.create_product()
 

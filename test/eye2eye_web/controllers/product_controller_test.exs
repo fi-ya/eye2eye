@@ -11,5 +11,4 @@ defmodule Eye2eyeWeb.ProductControllerTest do
       assert html_response(conn, 200) =~ "Summer 2022 Collection"
     end
   end
-
 end

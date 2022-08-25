@@ -14,6 +14,6 @@ defmodule Eye2eye.Catalog.Product do
   def changeset(product, attrs) do
     product
     |> cast(attrs, [:name, :image_url, :price])
-    |> validate_required([:name, :image_url, :price ])
+    |> validate_required([:name, :image_url, :price])
   end
 end
