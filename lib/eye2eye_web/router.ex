@@ -17,7 +17,7 @@ defmodule Eye2eyeWeb.Router do
   scope "/", Eye2eyeWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", ProductController, :index
   end
 
   # Other scopes may use custom stacks.
