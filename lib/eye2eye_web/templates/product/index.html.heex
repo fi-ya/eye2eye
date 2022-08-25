@@ -1,0 +1,21 @@
+<section class="phx-hero">
+  <h1><%= gettext("Welcome to %{name}!", name: "eye2eye") %></h1>
+  <p>Not just your standard eyeware company</p>
+</section>
+
+<section class="">
+<h2 class="text-center color">Summer 2022 Collection</h2>
+    <%= for product <- @products do %>
+    <article class="column">
+      <td>
+         <img src={product.image_url} alt={"An image of " <> product.name} >
+      </td>
+      <h2 class="margin-none"><%= product.name %></h2>
+      <div class="gap-sm">
+        <p>£<%= product.price %></p>
+        <button> Add to cart</button>
+      </div>
+   </article>
+<% end %>
+  
+</section>
