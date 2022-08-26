@@ -52,6 +52,9 @@ jobs:
       
       - name: Check Formatting
         run: mix format --check-formatted
+
+      - name: Run static code analysis
+        run: mix credo  
       
       - name: Run Unit Tests
         run: mix test --trace --slowest 10
