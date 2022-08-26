@@ -8,7 +8,6 @@ This is the final capstone project of the [8th Light Apprenticeship](https://8th
   - [Run tests](#run-tests)
   - [Project requirements](#project-requirements)
   - [Implementation requirements](#implementation-requirements)
-  - [File Structure](#file-structure)
   - [Learn more](#learn-more)
 
 ## Prerequisites
@@ -34,7 +33,7 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-***Note:** You can delete your database with `mix ecto.drop`, but make sure your server has stopped before you run the command.*
+***Note:** You can delete your database with `mix ecto.drop`, but make sure your server has stopped before you run the command. To view all the routes for the application run `mix phx.routes`
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
@@ -65,51 +64,6 @@ Since this is the first iteration of the app, the UI should be clear and functio
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## File Structure
-#### Overview
-├── _build 
-├── assets
-├── config
-├── deps
-├── lib
-│   ├── eye2eye
-│   ├── eye2eye_web
-│   ├── eye2eye_web.ex
-│   └── eye2eye.ex
-├── priv
-└── test
-
-#### Business domain
-lib/eye2eye
-├── catalog.ex
-│   └── product.ex
-├── application.ex
-├── catalog.ex
-├── mailer.ex
-└── repo.ex
-
-#### Web-related parts of our application
-lib/eye2eye_web
-├── controllers
-│   └── product_controller.ex
-├── templates
-│   ├── layout
-│   │   ├── app.html.heex
-│   │   ├── live.html.heex
-│   │   └── root.html.heex
-│   └── product
-│       └── index.html.heex
-├── views
-│   ├── error_helpers.ex
-│   ├── error_view.ex
-│   ├── layout_view.ex
-│   └── product_view.ex
-├── endpoint.ex
-├── gettext.ex
-├── router.ex
-└── telemetry.ex
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 ## Learn more
 
   * Official website: https://www.phoenixframework.org/
@@ -119,3 +73,7 @@ lib/eye2eye_web
   * Source: https://github.com/phoenixframework/phoenix
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+## Author
+
+Safia Ali 
