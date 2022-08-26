@@ -1,5 +1,5 @@
 defmodule Eye2eye.Catalog.Product do
-   @moduledoc false
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
 

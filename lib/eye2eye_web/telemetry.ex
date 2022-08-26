@@ -1,5 +1,5 @@
 defmodule Eye2eyeWeb.Telemetry do
-   @moduledoc false
+  @moduledoc false
   use Supervisor
   import Telemetry.Metrics
 
