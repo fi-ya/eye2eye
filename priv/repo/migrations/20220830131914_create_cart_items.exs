@@ -12,5 +12,6 @@ defmodule Eye2eye.Repo.Migrations.CreateCartItems do
 
     create index(:cart_items, [:cart_id])
     create index(:cart_items, [:product_id])
+    create unique_index(:cart_items, [:cart_id, :product_id])
   end
 end
