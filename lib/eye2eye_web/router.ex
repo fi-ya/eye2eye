@@ -1,6 +1,8 @@
 defmodule Eye2eyeWeb.Router do
   use Eye2eyeWeb, :router
 
+  alias Hello.ShoppingCart
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,19 @@ defmodule Eye2eyeWeb.Router do
     plug :put_root_layout, {Eye2eyeWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_user
+  end
+
+  defp fetch_current_user(conn, _) do
+    if user_uuid = get_session(conn, :current_uuid) do
+      assign(conn, :current_uuid, user_uuid)
+    else
+      new_uuid = Ecto.UUID.generate()
+
+      conn
+      |> assign(:current_uuid, new_uuid)
+      |> put_session(:current_uuid, new_uuid)
+    end
   end
 
   pipeline :api do
@@ -18,6 +33,8 @@ defmodule Eye2eyeWeb.Router do
     pipe_through :browser
 
     get "/", ProductController, :index
+
+    resources "/cart_items", CartItemController, only: [:create]
   end
 
   # Other scopes may use custom stacks.
