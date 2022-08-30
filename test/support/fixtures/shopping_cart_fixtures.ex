@@ -24,4 +24,18 @@ defmodule Eye2eye.ShoppingCartFixtures do
 
     cart
   end
+
+  @doc """
+  Generate a cart_item.
+  """
+  def cart_item_fixture(attrs \\ %{}) do
+    {:ok, cart_item} =
+      attrs
+      |> Enum.into(%{
+        quantity: 42
+      })
+      |> Eye2eye.ShoppingCart.create_cart_item()
+
+    cart_item
+  end
 end
