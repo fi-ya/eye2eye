@@ -6,6 +6,8 @@ defmodule Eye2eye.ShoppingCart.Cart do
   schema "carts" do
     field :user_uuid, Ecto.UUID
 
+    has_many :items, Eye2eye.ShoppingCart.CartItem
+
     timestamps()
   end
 
