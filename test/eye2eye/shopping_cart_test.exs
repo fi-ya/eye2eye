@@ -89,7 +89,9 @@ defmodule Eye2eye.ShoppingCartTest do
       cart_item = cart_item_fixture()
       update_attrs = %{quantity: 43}
 
-      assert {:ok, %CartItem{} = cart_item} = ShoppingCart.update_cart_item(cart_item, update_attrs)
+      assert {:ok, %CartItem{} = cart_item} =
+               ShoppingCart.update_cart_item(cart_item, update_attrs)
+
       assert cart_item.quantity == 43
     end
 
@@ -104,7 +106,10 @@ defmodule Eye2eye.ShoppingCartTest do
 
     test "update_cart_item/2 with nil quantity data returns error changeset" do
       cart_item = cart_item_fixture()
-      assert {:error, %Ecto.Changeset{}} = ShoppingCart.update_cart_item(cart_item, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               ShoppingCart.update_cart_item(cart_item, @invalid_attrs)
+
       assert cart_item == ShoppingCart.get_cart_item!(cart_item.id)
     end
 
