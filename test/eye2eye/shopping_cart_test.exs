@@ -93,7 +93,16 @@ defmodule Eye2eye.ShoppingCartTest do
       assert cart_item.quantity == 43
     end
 
-    test "update_cart_item/2 with invalid data returns error changeset" do
+    test "update_cart_item/2 with invalid quantity data returns error changeset" do
+      cart_item = cart_item_fixture()
+      update_attrs = %{quantity: 101}
+
+      assert {:error, %Ecto.Changeset{}} = ShoppingCart.update_cart_item(cart_item, update_attrs)
+      assert cart_item == ShoppingCart.get_cart_item!(cart_item.id)
+      assert cart_item.quantity == 42
+    end
+
+    test "update_cart_item/2 with nil quantity data returns error changeset" do
       cart_item = cart_item_fixture()
       assert {:error, %Ecto.Changeset{}} = ShoppingCart.update_cart_item(cart_item, @invalid_attrs)
       assert cart_item == ShoppingCart.get_cart_item!(cart_item.id)
