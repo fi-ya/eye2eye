@@ -4,9 +4,31 @@ defmodule Eye2eye.ShoppingCart do
   """
 
   import Ecto.Query, warn: false
-  alias Eye2eye.Repo
 
-  alias Eye2eye.ShoppingCart.Cart
+  alias Eye2eye.Repo
+  alias Eye2eye.Catalog
+  alias Eye2eye.ShoppingCart.{Cart, CartItem}
+
+  @doc """
+  Returns cart by user_uuid.
+
+  Fetches our cart and joins the cart items,
+  and their products so that we have the full cart
+  populated with all preloaded data.
+
+  """
+
+  def get_cart_by_user_uuid(user_uuid) do
+    Repo.one(
+      from(c in Cart,
+        where: c.user_uuid == ^user_uuid,
+        left_join: i in assoc(c, :items),
+        left_join: p in assoc(i, :product),
+        order_by: [asc: i.inserted_at],
+        preload: [items: {i, product: p}]
+      )
+    )
+  end
 
   @doc """
   Returns the list of carts.
@@ -38,7 +60,9 @@ defmodule Eye2eye.ShoppingCart do
   def get_cart!(id), do: Repo.get!(Cart, id)
 
   @doc """
-  Creates a cart.
+  Creates a cart using user uuid.
+
+  If insert successful reload cart contents
 
   ## Examples
 
@@ -49,11 +73,17 @@ defmodule Eye2eye.ShoppingCart do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_cart(attrs \\ %{}) do
-    %Cart{}
-    |> Cart.changeset(attrs)
+  def create_cart(user_uuid) do
+    %Cart{user_uuid: user_uuid}
+    |> Cart.changeset(%{})
     |> Repo.insert()
+    |> case do
+      {:ok, cart} -> {:ok, reload_cart(cart)}
+      {:error, changeset} -> {:error, changeset}
+    end
   end
+
+  defp reload_cart(%Cart{} = cart), do: get_cart_by_user_uuid(cart.user_uuid)
 
   @doc """
   Updates a cart.
@@ -102,8 +132,6 @@ defmodule Eye2eye.ShoppingCart do
     Cart.changeset(cart, attrs)
   end
 
-  alias Eye2eye.ShoppingCart.CartItem
-
   @doc """
   Returns the list of cart_items.
 
@@ -149,6 +177,24 @@ defmodule Eye2eye.ShoppingCart do
     %CartItem{}
     |> CartItem.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Adds an item to cart.
+
+  Issue a Repo.insert call with a query to add a new cart item into the database,
+  or increase the quantity by one if it already exists in the cart.
+
+  """
+  def add_item_to_cart(%Cart{} = cart, %Catalog.Product{} = product) do
+    %CartItem{quantity: 1}
+    |> CartItem.changeset(%{})
+    |> Ecto.Changeset.put_assoc(:cart, cart)
+    |> Ecto.Changeset.put_assoc(:product, product)
+    |> Repo.insert(
+      on_conflict: [inc: [quantity: 1]],
+      conflict_target: [:cart_id, :product_id]
+    )
   end
 
   @doc """

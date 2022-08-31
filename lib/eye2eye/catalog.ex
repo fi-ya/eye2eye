@@ -22,6 +22,22 @@ defmodule Eye2eye.Catalog do
   end
 
   @doc """
+  Gets a single product.
+
+  Raises `Ecto.NoResultsError` if the Product does not exist.
+
+  ## Examples
+
+      iex> get_product!(123)
+      %Product{}
+
+      iex> get_product!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_product!(id), do: Repo.get!(Product, id)
+
+  @doc """
   Creates a product.
 
   ## Examples

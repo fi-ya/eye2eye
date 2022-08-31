@@ -11,7 +11,7 @@ defmodule Eye2eye.CatalogFixtures do
     {:ok, product} =
       attrs
       |> Enum.into(%{
-        image_url: "some image_url",
+        image_url: "https://images.ray-ban.com/is/image/RayBan/805289270102",
         name: "some name",
         price: "120.50"
       })

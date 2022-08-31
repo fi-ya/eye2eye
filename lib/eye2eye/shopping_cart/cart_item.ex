@@ -6,7 +6,7 @@ defmodule Eye2eye.ShoppingCart.CartItem do
   schema "cart_items" do
     field :quantity, :integer
 
-    belongs_to :cart, Eye2eye.ShoppingCart.CartItem
+    belongs_to :cart, Eye2eye.ShoppingCart.Cart
     belongs_to :product, Eye2eye.Catalog.Product
 
     timestamps()
