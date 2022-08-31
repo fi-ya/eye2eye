@@ -15,6 +15,11 @@ defmodule Eye2eye.CatalogTest do
       assert Catalog.list_products() == [product]
     end
 
+    test "get_product!/1 returns the product with given id" do
+      product = product_fixture()
+      assert Catalog.get_product!(product.id) == product
+    end
+
     test "create_product/1 with valid data creates a product" do
       valid_attrs = %{
         image_url: "https://images.unsplash.com/photo",

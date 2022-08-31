@@ -18,10 +18,11 @@ defmodule Eye2eye.ShoppingCartFixtures do
     {:ok, cart} =
       attrs
       |> Enum.into(%{
-        user_uuid: unique_cart_user_uuid()
+        user_uuid: Ecto.UUID.generate()
       })
       |> Eye2eye.ShoppingCart.create_cart()
 
+    I0.inspect(cart)
     cart
   end
 
