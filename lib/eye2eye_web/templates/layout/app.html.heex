@@ -1,22 +1,3 @@
-<header>
-  <section class="container">
-    <nav class="gap-sm">
-      <h1 class="margin-none "><a href="/" class="font-black">eye2eye</a></h1>
-
-      <div class="font-sm row__nav ">
-        <a href="/">Your Orders</a>
-        <a href="/"> 
-          🛍️ 
-          <%= if @total_cart_items > 0 do %>
-            <span><%= @total_cart_items%></span>
-          <% end %>
-        </a>
-        <cart_counter />
-      </div>
-    </nav>
-  </section>
-</header>
-
 <main class="container">
   <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
   <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
