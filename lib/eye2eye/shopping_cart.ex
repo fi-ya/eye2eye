@@ -85,6 +85,13 @@ defmodule Eye2eye.ShoppingCart do
 
   defp reload_cart(%Cart{} = cart), do: get_cart_by_user_uuid(cart.user_uuid)
 
+  def total_cart_items(%Cart{} = cart) do
+    Enum.reduce(cart.items, 0, fn item, acc ->
+      item.quantity
+      |> Decimal.add(acc)
+    end)
+  end
+
   @doc """
   Updates a cart.
 
