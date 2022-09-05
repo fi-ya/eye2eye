@@ -3,18 +3,18 @@ defmodule Eye2eye.CatalogFixtures do
   This module defines test helpers for creating
   entities via the `Eye2eye.Catalog` context.
   """
-
+  @product_one_attrs %{
+    name: "Product One",
+    image_url: "https://images.com/1",
+    price: "120.50"
+  }
   @doc """
   Generate a product.
   """
-  def product_fixture(attrs \\ %{}) do
+  def create_product_fixture(attrs \\ %{}, product_attrs \\ @product_one_attrs) do
     {:ok, product} =
       attrs
-      |> Enum.into(%{
-        image_url: "https://images.ray-ban.com/is/image/RayBan/805289270102",
-        name: "some name",
-        price: "120.50"
-      })
+      |> Enum.into(product_attrs)
       |> Eye2eye.Catalog.create_product()
 
     product
