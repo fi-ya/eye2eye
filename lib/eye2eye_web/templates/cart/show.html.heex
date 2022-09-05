@@ -1,5 +1,31 @@
-<h1>My Cart</h1>
-
+<h1>My Cart <%= if @cart.items != [] do %>
+              <span>(<%= ShoppingCart.total_cart_items(@cart)%>)</span>
+            <% end %> </h1>
 <%= if @cart.items == [] do %>
-  Your cart is empty
+  <h2>Your cart is empty</h2>
+<% else %>
+  <ul class="list-style_none">
+    <%= for item <- @cart.items do %>
+      <li class="cart ">
+        <img src={item.product.image_url} alt={"An image of " <> item.product.name} class="cart_img">
+        <div> 
+          <p><strong><%= item.product.name %></strong></p>
+          <p class="font-sm">Price: £<%= item.product.price %></p>
+          <p class="font-sm"> <em>Quantity: </em><%= item.quantity %></p>
+        </div>
+        <div >
+          <p class="margin-bottom_md">
+            <b>£<%= ShoppingCart.total_item_price(item) %></b>
+          </p> 
+          <p>Remove</p>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+  <div class="checkout-container">
+    <p><b>Total</b>: £<%= ShoppingCart.total_cart_price(@cart) %></p>
+    <div class="btn cart-btn"> 
+      <p>Checkout </p>
+    </div>
+  </div>
 <% end %>
