@@ -5,8 +5,7 @@ defmodule Eye2eyeWeb.ProductController do
 
   def index(conn, _params) do
     products = Catalog.list_products()
-    total_cart_items = ShoppingCart.total_cart_items(conn.assigns.cart)
 
-    render(conn, "index.html", products: products, total_cart_items: total_cart_items)
+    render(conn, "index.html", products: products)
   end
 end

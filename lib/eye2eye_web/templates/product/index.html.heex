@@ -4,20 +4,17 @@
 </section>
 
 <section class="">
-<h2 class="text-center color">Summer 2022 Collection</h2>
-    <%= for product <- @products do %>
-    <article class="column">
-      <td>
+   <h2 class="text-center color">Summer 2022 Collection</h2>
+   <%= for product <- @products do %>
+      <article class="column margin-bottom_md">
          <img src={product.image_url} alt={"An image of " <> product.name} >
-      </td>
-      <h2 class="margin-none"><%= product.name %></h2>
-      <div class="gap-sm">
-        <p>£<%= product.price %></p>
-        <div class="btn"> 
-           <%= link "Add to cart", to: Routes.cart_item_path(@conn, :create, product_id: product.id), method: :post, class: "cart-btn"%> 
-        </div>
-      </div>
-   </article>
-<% end %>
-  
+         <h2 class="margin-none"><%= product.name %></h2>
+         <div class="gap-sm">
+            <p>£<%= product.price %></p>
+            <div class="btn"> 
+               <%= link "Add to cart", to: Routes.cart_item_path(@conn, :create, product_id: product.id), method: :post, class: "cart-btn"%> 
+            </div>
+         </div>
+      </article>
+   <% end %>
 </section>

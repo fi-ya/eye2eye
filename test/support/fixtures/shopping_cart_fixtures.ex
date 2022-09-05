@@ -2,9 +2,8 @@ defmodule Eye2eye.ShoppingCartFixtures do
   @moduledoc """
   This module defines test helpers for creating
   entities via the `Eye2eye.ShoppingCart` context.
-  """
 
-  @doc """
+  @doc \"""
   Generate a unique cart user_uuid.
   """
   def unique_cart_user_uuid do
@@ -14,28 +13,20 @@ defmodule Eye2eye.ShoppingCartFixtures do
   @doc """
   Generate a cart.
   """
-  def cart_fixture(attrs \\ %{}) do
-    {:ok, cart} =
-      attrs
-      |> Enum.into(%{
-        user_uuid: unique_cart_user_uuid()
-      })
-      |> Eye2eye.ShoppingCart.create_cart()
 
+  def create_cart_fixture() do
+    {:ok, cart} = Eye2eye.ShoppingCart.create_cart(unique_cart_user_uuid())
     cart
   end
 
-  @doc """
-  Generate a cart_item.
-  """
-  def cart_item_fixture(attrs \\ %{}) do
-    {:ok, cart_item} =
-      attrs
-      |> Enum.into(%{
-        quantity: 42
-      })
-      |> Eye2eye.ShoppingCart.create_cart_item()
+  def add_cart_item_fixture(cart, product) do
+    {:ok, cart_with_item} = Eye2eye.ShoppingCart.add_item_to_cart(cart, product)
+    cart_with_item
+  end
 
-    cart_item
+  def reload_cart_fixture(user_uuid) do
+    {:ok, reload_cart} = Eye2eye.ShoppingCart.get_cart_by_user_uuid(user_uuid)
+
+    reload_cart
   end
 end
