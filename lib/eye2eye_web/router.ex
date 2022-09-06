@@ -47,6 +47,7 @@ defmodule Eye2eyeWeb.Router do
     resources "/cart_items", CartItemController, only: [:create]
 
     get "/cart", CartController, :show
+    put "/cart", CartController, :update
   end
 
   # Other scopes may use custom stacks.
