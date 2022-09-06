@@ -9,6 +9,8 @@ defmodule Eye2eye.ShoppingCart do
   alias Eye2eye.Catalog
   alias Eye2eye.ShoppingCart.{Cart, CartItem}
 
+  @min_cart_item_price Decimal.new("0.00")
+
   @doc """
   Returns cart by user_uuid.
 
@@ -56,56 +58,6 @@ defmodule Eye2eye.ShoppingCart do
 
   def reload_cart(%Cart{} = cart), do: get_cart_by_user_uuid(cart.user_uuid)
 
-  @doc """
-  Updates a cart.
-
-  ## Examples
-
-      iex> update_cart(cart, %{field: new_value})
-      {:ok, %Cart{}}
-
-      iex> update_cart(cart, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-
-  # def update_cart(%Cart{} = cart, attrs) do
-  #   cart
-  #   |> Cart.changeset(attrs)
-  #   |> Repo.update()
-  # end
-
-  @doc """
-  Deletes a cart.
-
-  ## Examples
-
-      iex> delete_cart(cart)
-      {:ok, %Cart{}}
-
-      iex> delete_cart(cart)
-      {:error, %Ecto.Changeset{}}
-
-  """
-
-  # def delete_cart(%Cart{} = cart) do
-  #   Repo.delete(cart)
-  # end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking cart changes.
-
-  ## Examples
-
-      iex> change_cart(cart)
-      %Ecto.Changeset{data: %Cart{}}
-
-  """
-
-  # def change_cart(%Cart{} = cart, attrs \\ %{}) do
-  #   Cart.changeset(cart, attrs)
-  # end
-
   def total_cart_items(%Cart{} = cart) do
     Enum.reduce(cart.items, 0, fn item, acc ->
       item.quantity + acc
@@ -113,7 +65,7 @@ defmodule Eye2eye.ShoppingCart do
   end
 
   def total_cart_price(%Cart{} = cart) do
-    Enum.reduce(cart.items, Decimal.new("0.00"), fn item, acc ->
+    Enum.reduce(cart.items, @min_cart_item_price, fn item, acc ->
       item
       |> total_item_price()
       |> Decimal.add(acc)
@@ -123,23 +75,11 @@ defmodule Eye2eye.ShoppingCart do
   # ----- CART ITEMS FUNCTIONS START HERE -----
 
   @doc """
-  Returns the list of cart_items.
+  Gets a single cart_item by id and add product
+  associations to be preloaded into the result set.
 
-  ## Examples
-
-      iex> list_cart_items()
-      [%CartItem{}, ...]
-
-  """
-
-  # def list_cart_items do
-  #   Repo.all(CartItem)
-  # end
-
-  @doc """
-  Gets a single cart_item.
-
-  Raises `Ecto.NoResultsError` if the Cart item does not exist.
+  Raises `Ecto.NoResultsError` if the Cart item does
+  not exist.
 
   ## Examples
 
@@ -151,7 +91,15 @@ defmodule Eye2eye.ShoppingCart do
 
   """
 
-  # def get_cart_item!(id), do: Repo.get!(CartItem, id)
+  def get_cart_item!(id) do
+    Repo.one(
+      from(i in CartItem,
+        where: i.id == ^id,
+        left_join: p in assoc(i, :product),
+        preload: [product: p]
+      )
+    )
+  end
 
   @doc """
   Adds an item to cart.
@@ -160,17 +108,15 @@ defmodule Eye2eye.ShoppingCart do
   or increase the quantity by one if it already exists in the cart.
 
   """
-  def add_item_to_cart(%Cart{} = cart, %Catalog.Product{} = product) do
-    %CartItem{quantity: 1}
-    |> CartItem.changeset(%{})
+  def add_item_to_cart(%Cart{} = cart, %Catalog.Product{} = product, cart_item_attrs) do
+    %CartItem{}
+    |> CartItem.changeset(cart_item_attrs)
     |> Ecto.Changeset.put_assoc(:cart, cart)
     |> Ecto.Changeset.put_assoc(:product, product)
     |> Repo.insert(
       on_conflict: [inc: [quantity: 1]],
       conflict_target: [:cart_id, :product_id]
     )
-
-    {:ok, reload_cart(cart)}
   end
 
   def total_item_price(%CartItem{} = item) do
@@ -178,7 +124,8 @@ defmodule Eye2eye.ShoppingCart do
   end
 
   @doc """
-  Updates a cart_item.
+  Validate cart_item_attrs then updates a cart_item and
+  deletes if quantity is zero.
 
   ## Examples
 
@@ -190,39 +137,29 @@ defmodule Eye2eye.ShoppingCart do
 
   """
 
-  # def update_cart_item(%CartItem{} = cart_item, attrs) do
-  #   cart_item
-  #   |> CartItem.changeset(attrs)
-  #   |> Repo.update()
-  # end
+  def update_cart_item(%CartItem{} = cart_item, cart_item_attrs) do
+    update_attrs = reduce_item_quantity_by_one(cart_item_attrs)
 
-  @doc """
-  Deletes a cart_item.
+    changeset =
+      cart_item
+      |> CartItem.changeset(update_attrs)
 
-  ## Examples
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:cart_item, changeset)
+    |> Ecto.Multi.delete_all(:discarded_items, fn %{cart_item: cart_item} ->
+      from(i in CartItem, where: i.quantity == 0)
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{cart_item: cart_item}} -> {:ok, cart_item}
+      {:error, :cart_item, changeset, _changes_so_far} -> {:error, changeset}
+    end
+  end
 
-      iex> delete_cart_item(cart_item)
-      {:ok, %CartItem{}}
+  def reduce_item_quantity_by_one(cart_item_attrs, updated_attrs \\ %{}) do
+    updated_quantity = cart_item_attrs.quantity - 1
 
-      iex> delete_cart_item(cart_item)
-      {:error, %Ecto.Changeset{}}
-
-  """
-
-  # def delete_cart_item(%CartItem{} = cart_item) do
-  #   Repo.delete(cart_item)
-  # end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking cart_item changes.
-
-  ## Examples
-
-      iex> change_cart_item(cart_item)
-      %Ecto.Changeset{data: %CartItem{}}
-
-  """
-  # def change_cart_item(%CartItem{} = cart_item, attrs \\ %{}) do
-  #   CartItem.changeset(cart_item, attrs)
-  # end
+    updated_attrs
+    |> Enum.into(%{quantity: updated_quantity})
+  end
 end
