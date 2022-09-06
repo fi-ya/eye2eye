@@ -2,7 +2,7 @@
               <span>(<%= ShoppingCart.total_cart_items(@cart)%>)</span>
             <% end %> </h1>
 <%= if @cart.items == [] do %>
-  <h2>Your cart is empty</h2>
+  <p>Your cart is empty</p>
 <% else %>
   <ul class="list-style_none">
     <%= for item <- @cart.items do %>
@@ -11,13 +11,16 @@
         <div> 
           <p><strong><%= item.product.name %></strong></p>
           <p class="font-sm">Price: £<%= item.product.price %></p>
-          <p class="font-sm"> <em>Quantity: </em><%= item.quantity %></p>
+          <p class="font-sm"> <em>Quantity: </em><%= item.quantity%></p>
         </div>
         <div >
           <p class="margin-bottom_md">
             <b>£<%= ShoppingCart.total_item_price(item) %></b>
           </p> 
-          <p>Remove</p>
+          <%# <p>Remove</p> %>
+          <div class="btn"> 
+            <%= link "Remove", to: Routes.cart_path(@conn, :update, item_id: item.id, cart_item_attrs: %{quantity: item.quantity}), method: :put, class: "cart-btn"%> 
+          </div>
         </div>
       </li>
     <% end %>
