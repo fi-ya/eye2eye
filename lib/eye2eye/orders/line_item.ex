@@ -5,8 +5,9 @@ defmodule Eye2eye.Orders.LineItem do
   schema "order_line_items" do
     field :price, :decimal
     field :quantity, :integer
-    field :order_id, :id
-    field :product_id, :id
+
+    belongs_to :order, Eye2eye.Orders.Order
+    belongs_to :product, Eye2eye.Catalog.Product
 
     timestamps()
   end

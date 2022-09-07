@@ -6,6 +6,9 @@ defmodule Eye2eye.Orders.Order do
     field :total_price, :decimal
     field :user_uuid, Ecto.UUID
 
+    has_many :line_items, Eye2eye.Orders.LineItem
+    has_many :products, through: [:line_items, :product]
+
     timestamps()
   end
 
