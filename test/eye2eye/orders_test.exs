@@ -21,10 +21,10 @@ defmodule Eye2eye.OrdersTest do
     end
 
     test "create_order/1 with valid data creates a order" do
-      valid_attrs = %{total_price: "120.5", user_uuid: "7488a646-e31f-11e4-aace-600308960662"}
+      valid_attrs = %{total_price: "120.00", user_uuid: "7488a646-e31f-11e4-aace-600308960662"}
 
       assert {:ok, %Order{} = order} = Orders.create_order(valid_attrs)
-      assert order.total_price == Decimal.new("120.5")
+      assert order.total_price == Decimal.new("120.00")
       assert order.user_uuid == "7488a646-e31f-11e4-aace-600308960662"
     end
 
