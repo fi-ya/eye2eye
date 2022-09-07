@@ -104,7 +104,7 @@ defmodule Eye2eye.ShoppingCartTest do
       product = create_product_fixture()
 
       cart_with_item = add_cart_item_fixture(cart, product)
-      cart_item = hd(cart_with_item.items)
+      cart_item = List.first(cart_with_item.items)
 
       assert ShoppingCart.get_cart_item!(cart_item.id) == cart_item
     end
@@ -176,8 +176,8 @@ defmodule Eye2eye.ShoppingCartTest do
       cart = create_cart_fixture()
 
       cart_with_one_item = add_cart_item_fixture(cart, product)
-      cart_item = hd(cart_with_one_item.items)
-
+      cart_item = List.first(cart_with_one_item.items)
+  
       assert cart_item.product.price === Decimal.new("120.50")
       assert cart_item.quantity === 1
       assert ShoppingCart.total_item_price(cart_item) === Decimal.new("120.50")
@@ -189,7 +189,7 @@ defmodule Eye2eye.ShoppingCartTest do
 
       cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
       cart_with_one_item_q2 = add_cart_item_fixture(cart, product_one)
-      cart_item = hd(cart_with_one_item_q2.items)
+      cart_item = List.first(cart_with_one_item_q2.items)
 
       assert cart_item.product.price === Decimal.new("120.50")
       assert cart_item.quantity === 2
