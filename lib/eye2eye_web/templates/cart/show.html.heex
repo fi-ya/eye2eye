@@ -27,8 +27,8 @@
   </ul>
   <div class="checkout-container">
     <p><b>Total</b>: £<%= ShoppingCart.total_cart_price(@cart) %></p>
-    <div class="btn cart-btn"> 
-      <p>Checkout </p>
+    <div class="btn"> 
+      <%= link "Checkout", to: Routes.order_path(@conn, :create), method: :post, class: "cart-btn"%>
     </div>
   </div>
 <% end %>
