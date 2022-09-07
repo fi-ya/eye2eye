@@ -56,13 +56,28 @@ defmodule Eye2eye.ShoppingCart do
     end
   end
 
+  @doc """
+  Reloads the cart by get_cart_by_user_uuid
+
+  """
+
   def reload_cart(%Cart{} = cart), do: get_cart_by_user_uuid(cart.user_uuid)
+
+  @doc """
+  Calculates the total cart items by adding together all cart_item.quantity
+
+  """
 
   def total_cart_items(%Cart{} = cart) do
     Enum.reduce(cart.items, 0, fn item, acc ->
       item.quantity + acc
     end)
   end
+
+  @doc """
+    Calculates the total cart price by adding together cart item totals
+
+  """
 
   def total_cart_price(%Cart{} = cart) do
     Enum.reduce(cart.items, @min_cart_item_price, fn item, acc ->
@@ -71,8 +86,6 @@ defmodule Eye2eye.ShoppingCart do
       |> Decimal.add(acc)
     end)
   end
-
-  # ----- CART ITEMS FUNCTIONS START HERE -----
 
   @doc """
   Gets a single cart_item by id and add product
@@ -156,10 +169,24 @@ defmodule Eye2eye.ShoppingCart do
     end
   end
 
+  @doc """
+  Reduces cart item quantity by one
+
+  """
+
   def reduce_item_quantity_by_one(cart_item_attrs, updated_attrs \\ %{}) do
     updated_quantity = cart_item_attrs.quantity - 1
 
     updated_attrs
     |> Enum.into(%{quantity: updated_quantity})
+  end
+
+  @doc """
+  Deletes cart items for a given cart_id
+
+  """
+  def prune_cart_items(%Cart{} = cart) do
+    {_, _} = Repo.delete_all(from(i in CartItem, where: i.cart_id == ^cart.id))
+    {:ok, reload_cart(cart)}
   end
 end

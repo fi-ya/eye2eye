@@ -258,5 +258,15 @@ defmodule Eye2eye.ShoppingCartTest do
       assert cart_item.quantity == 2
       assert ShoppingCart.reduce_item_quantity_by_one(cart_item).quantity == 1
     end
+
+    test "prune_cart_items returns an empty cart" do
+      product = create_product_fixture()
+      cart = create_cart_fixture()
+      cart_with_one_item = add_cart_item_fixture(cart, product)
+
+      assert {:ok, %Cart{} = cart} = ShoppingCart.prune_cart_items(cart_with_one_item)
+
+      assert cart.items == []
+    end
   end
 end
