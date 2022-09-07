@@ -1,63 +1,37 @@
 defmodule Eye2eye.OrdersTest do
   use Eye2eye.DataCase
 
+  import Eye2eye.ShoppingCartFixtures
+  import Eye2eye.CatalogFixtures
   import Eye2eye.OrdersFixtures
 
+  alias Eye2eye.ShoppingCart
   alias Eye2eye.Orders
+  alias Eye2eye.Orders.Order
+  alias Eye2eye.Orders.LineItem
 
   describe "orders" do
-    alias Eye2eye.Orders.Order
+    @invalid_order_attrs %{total_price: nil, user_uuid: nil}
 
-    @invalid_attrs %{total_price: nil, user_uuid: nil}
+    test "complete_order with valid data creates an order and empties the shopping cart" do
+      product = create_product_fixture()
+      cart = create_cart_fixture()
+      cart_with_one_item = add_cart_item_fixture(cart, product)
+      valid_order_attrs =  %{user_uuid: cart_with_one_item.user_uuid,
+    total_price: ShoppingCart.total_cart_price(cart_with_one_item)}
 
-    test "list_orders/0 returns all orders" do
-      order = order_fixture()
-      assert Orders.list_orders() == [order]
+      assert {:ok, %Order{} = order} = Orders.complete_order(cart_with_one_item, valid_order_attrs)
+
+      assert order.total_price == Decimal.new("120.50")
+      assert order.user_uuid == cart.user_uuid
     end
 
-    test "get_order!/1 returns the order with given id" do
-      order = order_fixture()
-      assert Orders.get_order!(order.id) == order
-    end
+    test "complete_order with invalid order data returns error changeset" do
+      product = create_product_fixture()
+      cart = create_cart_fixture()
+      cart_with_one_item = add_cart_item_fixture(cart, product)
 
-    test "create_order/1 with valid data creates a order" do
-      valid_attrs = %{total_price: "120.00", user_uuid: "7488a646-e31f-11e4-aace-600308960662"}
-
-      assert {:ok, %Order{} = order} = Orders.create_order(valid_attrs)
-      assert order.total_price == Decimal.new("120.00")
-      assert order.user_uuid == "7488a646-e31f-11e4-aace-600308960662"
-    end
-
-    test "create_order/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Orders.create_order(@invalid_attrs)
-    end
-  end
-
-  describe "order_line_items" do
-    alias Eye2eye.Orders.LineItem
-
-    @invalid_attrs %{price: nil, quantity: nil}
-
-    test "list_order_line_items/0 returns all order_line_items" do
-      line_item = line_item_fixture()
-      assert Orders.list_order_line_items() == [line_item]
-    end
-
-    test "get_line_item!/1 returns the line_item with given id" do
-      line_item = line_item_fixture()
-      assert Orders.get_line_item!(line_item.id) == line_item
-    end
-
-    test "create_line_item/1 with valid data creates a line_item" do
-      valid_attrs = %{price: "120.50", quantity: 1}
-
-      assert {:ok, %LineItem{} = line_item} = Orders.create_line_item(valid_attrs)
-      assert line_item.price == Decimal.new("120.50")
-      assert line_item.quantity == 1
-    end
-
-    test "create_line_item/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Orders.create_line_item(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Orders.complete_order(cart_with_one_item, @invalid_order_attrs)
     end
   end
 end
