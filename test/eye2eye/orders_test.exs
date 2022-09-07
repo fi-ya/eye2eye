@@ -17,13 +17,21 @@ defmodule Eye2eye.OrdersTest do
       product = create_product_fixture()
       cart = create_cart_fixture()
       cart_with_one_item = add_cart_item_fixture(cart, product)
-      valid_order_attrs =  %{user_uuid: cart_with_one_item.user_uuid,
-    total_price: ShoppingCart.total_cart_price(cart_with_one_item)}
 
-      assert {:ok, %Order{} = order} = Orders.complete_order(cart_with_one_item, valid_order_attrs)
+      valid_order_attrs = %{
+        user_uuid: cart_with_one_item.user_uuid,
+        total_price: ShoppingCart.total_cart_price(cart_with_one_item)
+      }
 
+      assert {:ok, %Order{} = order} =
+               Orders.complete_order(cart_with_one_item, valid_order_attrs)
       assert order.total_price == Decimal.new("120.50")
-      assert order.user_uuid == cart.user_uuid
+      assert order.user_uuid == cart_with_one_item.user_uuid
+
+      reload_cart = ShoppingCart.get_cart_by_user_uuid(cart_with_one_item.user_uuid)
+
+      IO.puts("CART reload" <> inspect(reload_cart))
+      assert reload_cart.items == []
     end
 
     test "complete_order with invalid order data returns error changeset" do
@@ -31,7 +39,8 @@ defmodule Eye2eye.OrdersTest do
       cart = create_cart_fixture()
       cart_with_one_item = add_cart_item_fixture(cart, product)
 
-      assert {:error, %Ecto.Changeset{}} = Orders.complete_order(cart_with_one_item, @invalid_order_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               Orders.complete_order(cart_with_one_item, @invalid_order_attrs)
     end
   end
 end

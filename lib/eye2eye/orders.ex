@@ -35,22 +35,28 @@ defmodule Eye2eye.Orders do
   """
 
   def complete_order(%ShoppingCart.Cart{} = cart, order_attrs) do
+    IO.puts("CART id: "<> inspect(cart.id))
+    IO.puts("CART items cart_id: "<> inspect(List.first(cart.items).cart_id))
+
     line_items =
       Enum.map(cart.items, fn item ->
         %{product_id: item.product_id, price: item.product.price, quantity: item.quantity}
       end)
-      
+
     order_changeset =
-    %Order{}
-    |> Order.changeset(order_attrs)
-    |> Ecto.Changeset.change(line_items: line_items)
+      %Order{}
+      |> Order.changeset(order_attrs)
+      |> Ecto.Changeset.change(line_items: line_items)
 
     Ecto.Multi.new()
     |> Ecto.Multi.insert(:order, order_changeset)
+    |> Ecto.Multi.run(:prune_cart, fn _repo, _changes ->
+      ShoppingCart.prune_cart_items(cart)
+    end)
     |> Repo.transaction()
     |> case do
       {:ok, %{order: order}} -> {:ok, order}
-      {:error, :order, changeset, _changes_so_far} -> {:error, changeset}
+      {:error, :order, order_changeset, _changes_so_far} -> {:error, order_changeset}
     end
   end
 end
