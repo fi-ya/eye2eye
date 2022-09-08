@@ -17,7 +17,6 @@
           <p class="margin-bottom_md">
             <b>£<%= ShoppingCart.total_item_price(item) %></b>
           </p> 
-          <%# <p>Remove</p> %>
           <div class="btn"> 
             <%= link "Remove", to: Routes.cart_path(@conn, :update, item_id: item.id, cart_item_attrs: %{quantity: item.quantity}), method: :put, class: "cart-btn"%> 
           </div>
@@ -27,8 +26,9 @@
   </ul>
   <div class="checkout-container">
     <p><b>Total</b>: £<%= ShoppingCart.total_cart_price(@cart) %></p>
-    <div class="btn cart-btn"> 
-      <p>Checkout </p>
+    <div class="btn"> 
+      <%= link "Checkout", to: Routes.order_path(@conn, :create, order: %{user_uuid: @cart.user_uuid, total_price: Decimal.to_string(ShoppingCart.total_cart_price(@cart))}), 
+       method: :post, class: "cart-btn"%>
     </div>
   </div>
 <% end %>

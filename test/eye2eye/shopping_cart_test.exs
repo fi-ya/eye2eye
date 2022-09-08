@@ -61,7 +61,6 @@ defmodule Eye2eye.ShoppingCartTest do
       product_one = create_product_fixture()
       product_two = create_product_fixture(@product_two_attrs)
       cart = create_cart_fixture()
-
       cart_with_item_q1 = add_cart_item_fixture(cart, product_one)
       cart_with_item_q2 = add_cart_item_fixture(cart_with_item_q1, product_one)
       cart_with_item_q3 = add_cart_item_fixture(cart_with_item_q2, product_two)
@@ -78,7 +77,6 @@ defmodule Eye2eye.ShoppingCartTest do
     test "total_cart_price when cart has one item returns valid decimal" do
       product_one = create_product_fixture()
       cart = create_cart_fixture()
-
       cart_with_item_q1 = add_cart_item_fixture(cart, product_one)
 
       assert ShoppingCart.total_cart_price(cart_with_item_q1) === Decimal.new("120.50")
@@ -88,7 +86,6 @@ defmodule Eye2eye.ShoppingCartTest do
       product_one = create_product_fixture()
       product_two = create_product_fixture(@product_two_attrs)
       cart = create_cart_fixture()
-
       cart_with_item1 = add_cart_item_fixture(cart, product_one)
       cart_with_item2 = add_cart_item_fixture(cart_with_item1, product_two)
 
@@ -102,9 +99,8 @@ defmodule Eye2eye.ShoppingCartTest do
     test "get_cart_item!/1 returns the cart_item with given id" do
       cart = create_cart_fixture()
       product = create_product_fixture()
-
       cart_with_item = add_cart_item_fixture(cart, product)
-      cart_item = hd(cart_with_item.items)
+      cart_item = List.first(cart_with_item.items)
 
       assert ShoppingCart.get_cart_item!(cart_item.id) == cart_item
     end
@@ -174,9 +170,8 @@ defmodule Eye2eye.ShoppingCartTest do
     test "total_item_price where one cart item present with quantity one returns valid decimal" do
       product = create_product_fixture()
       cart = create_cart_fixture()
-
       cart_with_one_item = add_cart_item_fixture(cart, product)
-      cart_item = hd(cart_with_one_item.items)
+      cart_item = List.first(cart_with_one_item.items)
 
       assert cart_item.product.price === Decimal.new("120.50")
       assert cart_item.quantity === 1
@@ -186,10 +181,9 @@ defmodule Eye2eye.ShoppingCartTest do
     test "total_item_price where one cart item present with quantity two returns valid decimal" do
       product_one = create_product_fixture()
       cart = create_cart_fixture()
-
       cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
       cart_with_one_item_q2 = add_cart_item_fixture(cart, product_one)
-      cart_item = hd(cart_with_one_item_q2.items)
+      cart_item = List.first(cart_with_one_item_q2.items)
 
       assert cart_item.product.price === Decimal.new("120.50")
       assert cart_item.quantity === 2
@@ -216,11 +210,6 @@ defmodule Eye2eye.ShoppingCartTest do
     end
 
     test "update_cart_item where one item with two quantity returns updated cart quantity" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
-      cart_with_one_item = add_cart_item_fixture(cart, product)
-      cart_item = List.first(cart_with_one_item.items)
-
       product_one = create_product_fixture()
       cart = create_cart_fixture()
       cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
@@ -268,6 +257,15 @@ defmodule Eye2eye.ShoppingCartTest do
 
       assert cart_item.quantity == 2
       assert ShoppingCart.reduce_item_quantity_by_one(cart_item).quantity == 1
+    end
+
+    test "prune_cart_items returns an empty cart" do
+      product = create_product_fixture()
+      cart = create_cart_fixture()
+      cart_with_one_item = add_cart_item_fixture(cart, product)
+
+      assert {:ok, %Cart{} = cart} = ShoppingCart.prune_cart_items(cart_with_one_item)
+      assert cart.items == []
     end
   end
 end

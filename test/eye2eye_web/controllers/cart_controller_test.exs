@@ -43,12 +43,7 @@ defmodule Eye2eyeWeb.CartControllerTest do
       {:ok, cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
-      conn = get(conn, Routes.cart_path(conn, :show))
       cart_item_attrs = %{quantity: cart_item.quantity}
-
-      assert html_response(conn, 200) =~ "Product One"
-      assert html_response(conn, 200) =~ "https://images.com/1"
-      assert html_response(conn, 200) =~ "120.50"
 
       conn =
         put(
@@ -72,8 +67,6 @@ defmodule Eye2eyeWeb.CartControllerTest do
       {:ok, cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
-      conn = get(conn, Routes.cart_path(conn, :show))
-
       conn =
         put(
           conn,
@@ -84,7 +77,9 @@ defmodule Eye2eyeWeb.CartControllerTest do
         )
 
       assert redirected_to(conn) == Routes.cart_path(conn, :show)
+
       conn = get(conn, Routes.cart_path(conn, :show))
+
       assert html_response(conn, 200) =~ "There was an error updating your cart"
     end
 
@@ -101,6 +96,7 @@ defmodule Eye2eyeWeb.CartControllerTest do
       conn = get(conn, Routes.cart_path(conn, :show))
       cart_item = List.first(conn.assigns.cart.items)
       cart_item_attrs = %{quantity: cart_item.quantity}
+
       assert cart_item.quantity == 2
 
       conn =
