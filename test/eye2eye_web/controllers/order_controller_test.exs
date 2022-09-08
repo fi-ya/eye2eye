@@ -2,10 +2,9 @@ defmodule Eye2eyeWeb.OrderControllerTest do
   use Eye2eyeWeb.ConnCase
 
   import Eye2eye.CatalogFixtures
-  import Eye2eye.ShoppingCartFixtures
   import Eye2eye.OrdersFixtures
 
-  alias Eye2eye.{ShoppingCart, Catalog}
+  alias Eye2eye.{ShoppingCart}
 
   @valid_cart_item_attrs %{quantity: 1}
 

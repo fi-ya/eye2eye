@@ -8,7 +8,6 @@ defmodule Eye2eye.OrdersTest do
   alias Eye2eye.ShoppingCart
   alias Eye2eye.Orders
   alias Eye2eye.Orders.Order
-  alias Eye2eye.Orders.LineItem
 
   describe "orders" do
     @invalid_order_attrs %{total_price: nil, user_uuid: nil}

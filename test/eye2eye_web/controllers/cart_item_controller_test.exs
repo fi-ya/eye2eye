@@ -1,9 +1,6 @@
 defmodule Eye2eyeWeb.CartItemControllerTest do
   use Eye2eyeWeb.ConnCase
-
-  alias Eye2eye.Catalog
-  alias Eye2eye.ShoppingCart
-
+  
   import Eye2eye.CatalogFixtures
 
   @invalid_cart_item_attrs %{quantity: 150}
