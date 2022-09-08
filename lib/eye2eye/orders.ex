@@ -35,9 +35,6 @@ defmodule Eye2eye.Orders do
   """
 
   def complete_order(%ShoppingCart.Cart{} = cart, order_attrs) do
-    IO.puts("CART id: "<> inspect(cart.id))
-    IO.puts("CART items cart_id: "<> inspect(List.first(cart.items).cart_id))
-
     line_items =
       Enum.map(cart.items, fn item ->
         %{product_id: item.product_id, price: item.product.price, quantity: item.quantity}

@@ -1,4 +1,5 @@
 defmodule Eye2eye.Orders.LineItem do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
 

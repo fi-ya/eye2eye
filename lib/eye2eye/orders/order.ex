@@ -1,4 +1,5 @@
 defmodule Eye2eye.Orders.Order do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
 

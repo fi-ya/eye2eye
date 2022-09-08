@@ -25,12 +25,12 @@ defmodule Eye2eye.OrdersTest do
 
       assert {:ok, %Order{} = order} =
                Orders.complete_order(cart_with_one_item, valid_order_attrs)
+
       assert order.total_price == Decimal.new("120.50")
       assert order.user_uuid == cart_with_one_item.user_uuid
 
       reload_cart = ShoppingCart.get_cart_by_user_uuid(cart_with_one_item.user_uuid)
 
-      IO.puts("CART reload" <> inspect(reload_cart))
       assert reload_cart.items == []
     end
 

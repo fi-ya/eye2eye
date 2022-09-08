@@ -265,7 +265,6 @@ defmodule Eye2eye.ShoppingCartTest do
       cart_with_one_item = add_cart_item_fixture(cart, product)
 
       assert {:ok, %Cart{} = cart} = ShoppingCart.prune_cart_items(cart_with_one_item)
-
       assert cart.items == []
     end
   end
