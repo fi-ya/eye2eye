@@ -13,7 +13,7 @@ defmodule Eye2eyeWeb.OrderControllerTest do
       product = create_product_fixture()
       conn = get(conn, Routes.product_path(conn, :index))
 
-      {:ok, cart_item} =
+      {:ok, _cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
       valid_order_params = %{
@@ -37,7 +37,7 @@ defmodule Eye2eyeWeb.OrderControllerTest do
       product = create_product_fixture()
       conn = get(conn, Routes.product_path(conn, :index))
 
-      {:ok, cart_item} =
+      {:ok, _cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
       invalid_order_params = %{total_price: nil, user_uuid: conn.assigns.cart.user_uuid}

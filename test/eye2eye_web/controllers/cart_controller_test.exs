@@ -24,7 +24,7 @@ defmodule Eye2eyeWeb.CartControllerTest do
     test "display cart item when there is an item in the cart", %{conn: conn, product: product} do
       conn = get(conn, Routes.product_path(conn, :index))
 
-      {:ok, cart_item} =
+      {:ok, _cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
       conn = get(conn, Routes.cart_path(conn, :show))
@@ -89,7 +89,7 @@ defmodule Eye2eyeWeb.CartControllerTest do
     test "when item quantity two display updates when a cart item quantity removed", %{conn: conn, product: product} do
       conn = get(conn, Routes.product_path(conn, :index))
 
-      {:ok, cart_item_q1} =
+      {:ok, _cart_item_q1} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
       {:ok, cart_item_q2} =

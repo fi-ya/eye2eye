@@ -111,7 +111,7 @@ defmodule Eye2eye.ShoppingCartTest do
 
       assert cart.items == []
 
-      assert {:ok, %CartItem{} = cart_item} =
+      assert {:ok, %CartItem{} = _cart_item} =
                ShoppingCart.add_item_to_cart(cart, product, @valid_cart_item_attrs)
 
       reload_cart = ShoppingCart.reload_cart(cart)
@@ -126,12 +126,12 @@ defmodule Eye2eye.ShoppingCartTest do
 
       assert cart.items == []
 
-      assert {:ok, %CartItem{} = cart_item} =
+      assert {:ok, %CartItem{} = _cart_item} =
                ShoppingCart.add_item_to_cart(cart, product_one, @valid_cart_item_attrs)
 
       cart_with_item_one = ShoppingCart.reload_cart(cart)
 
-      assert {:ok, %CartItem{} = cart} =
+      assert {:ok, %CartItem{} = _cart} =
                ShoppingCart.add_item_to_cart(
                  cart_with_item_one,
                  product_two,
@@ -145,17 +145,17 @@ defmodule Eye2eye.ShoppingCartTest do
 
     test "add_item_to_cart when cart has the item already returns no increase in length" do
       cart = create_cart_fixture()
-      product_one = create_product_fixture()
+      _product_one = create_product_fixture()
       product_one = create_product_fixture()
 
       assert cart.items == []
 
-      assert {:ok, %CartItem{} = cart_item_one} =
+      assert {:ok, %CartItem{} = _cart_item_one} =
                ShoppingCart.add_item_to_cart(cart, product_one, @valid_cart_item_attrs)
 
       cart_with_item_q1 = ShoppingCart.reload_cart(cart)
 
-      assert {:ok, %CartItem{} = cart_item_two} =
+      assert {:ok, %CartItem{} = _cart_item_two} =
                ShoppingCart.add_item_to_cart(
                  cart_with_item_q1,
                  product_one,
@@ -181,7 +181,7 @@ defmodule Eye2eye.ShoppingCartTest do
     test "total_item_price where one cart item present with quantity two returns valid decimal" do
       product_one = create_product_fixture()
       cart = create_cart_fixture()
-      cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
+      _cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
       cart_with_one_item_q2 = add_cart_item_fixture(cart, product_one)
       cart_item = List.first(cart_with_one_item_q2.items)
 
@@ -212,7 +212,7 @@ defmodule Eye2eye.ShoppingCartTest do
     test "update_cart_item where one item with two quantity returns updated cart quantity" do
       product_one = create_product_fixture()
       cart = create_cart_fixture()
-      cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
+      _cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
       cart_with_one_item_q2 = add_cart_item_fixture(cart, product_one)
       cart_item = List.first(cart_with_one_item_q2.items)
       cart_item_attrs = %{quantity: cart_item.quantity}
@@ -251,7 +251,7 @@ defmodule Eye2eye.ShoppingCartTest do
     test "reduce_item_quantity_by_one where quantity is two returns correct integer" do
       product_one = create_product_fixture()
       cart = create_cart_fixture()
-      cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
+      _cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
       cart_with_one_item_q2 = add_cart_item_fixture(cart, product_one)
       cart_item = List.first(cart_with_one_item_q2.items)
 
