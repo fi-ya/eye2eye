@@ -1,0 +1,28 @@
+<h1>Your Orders</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Order Date</th>
+      <th>Total price</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for order <- @orders do %>
+  
+    <tr>
+      <td><%= order.id %></td>
+      <td><%=Enum.at(Enum.reverse(String.split(Date.to_string(NaiveDateTime.to_date(order.inserted_at)), "-")), 0)<>"-"<>Enum.at(Enum.reverse(String.split(Date.to_string(NaiveDateTime.to_date(order.inserted_at)), "-")), 1)<>"-"<>Enum.at(Enum.reverse(String.split(Date.to_string(NaiveDateTime.to_date(order.inserted_at)), "-")), 2) %></td>
+      <td>£<%= order.total_price %></td>
+      <td>
+        <span><%= link "Show", to: Routes.order_path(@conn, :show, order) %></span>
+      </td>
+    </tr>
+  
+<% end %>
+
+  </tbody>
+</table>
