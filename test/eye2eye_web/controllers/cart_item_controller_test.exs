@@ -16,7 +16,6 @@ defmodule Eye2eyeWeb.CartItemControllerTest do
 
     test "redirects to product index route when cart item data is valid with success message",
          %{conn: conn, product: product} do
-
       conn =
         post(
           conn,
@@ -35,7 +34,6 @@ defmodule Eye2eyeWeb.CartItemControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, product: product} do
-
       conn =
         post(
           conn,

@@ -40,7 +40,8 @@ defmodule Eye2eyeWeb.CartControllerTest do
     @invalid_cart_item_attrs %{quantity: 0}
 
     test "when item quantity one, display empty cart message when item quantity removed", %{
-      conn: conn , product: product
+      conn: conn,
+      product: product
     } do
       conn = get(conn, Routes.product_path(conn, :index))
 
@@ -86,7 +87,10 @@ defmodule Eye2eyeWeb.CartControllerTest do
       assert html_response(conn, 200) =~ "There was an error updating your cart"
     end
 
-    test "when item quantity two display updates when a cart item quantity removed", %{conn: conn, product: product} do
+    test "when item quantity two display updates when a cart item quantity removed", %{
+      conn: conn,
+      product: product
+    } do
       conn = get(conn, Routes.product_path(conn, :index))
 
       {:ok, _cart_item_q1} =

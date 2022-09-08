@@ -3,5 +3,4 @@ defmodule Eye2eye.OrdersFixtures do
   This module defines test helpers for creating
   entities via the `Eye2eye.Orders` context.
   """
-  
 end

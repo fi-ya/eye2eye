@@ -16,7 +16,10 @@ defmodule Eye2eyeWeb.OrderControllerTest do
   describe "create order" do
     setup [:create_product]
 
-    test "redirects to show empty cart message when order data is valid", %{conn: conn, product: product} do
+    test "redirects to show empty cart message when order data is valid", %{
+      conn: conn,
+      product: product
+    } do
       conn = get(conn, Routes.product_path(conn, :index))
 
       {:ok, _cart_item} =
