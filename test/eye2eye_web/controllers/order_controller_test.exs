@@ -17,12 +17,12 @@ defmodule Eye2eyeWeb.OrderControllerTest do
       {:ok, cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
-      valid_order_attrs = %{
+      valid_order_params = %{
         user_uuid: conn.assigns.cart.user_uuid,
         total_price: Decimal.to_string(ShoppingCart.total_cart_price(conn.assigns.cart))
       }
 
-      conn = post(conn, Routes.order_path(conn, :create, order_attrs: valid_order_attrs))
+      conn = post(conn, Routes.order_path(conn, :create, order: valid_order_params))
 
       assert redirected_to(conn) == Routes.cart_path(conn, :show)
 
@@ -41,9 +41,9 @@ defmodule Eye2eyeWeb.OrderControllerTest do
       {:ok, cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
-      invalid_order_attrs = %{total_price: nil, user_uuid: conn.assigns.cart.user_uuid}
+      invalid_order_params = %{total_price: nil, user_uuid: conn.assigns.cart.user_uuid}
 
-      conn = post(conn, Routes.order_path(conn, :create, order_attrs: invalid_order_attrs))
+      conn = post(conn, Routes.order_path(conn, :create, order: invalid_order_params))
 
       assert redirected_to(conn) == Routes.cart_path(conn, :show)
 

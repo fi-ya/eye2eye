@@ -5,13 +5,8 @@ defmodule Eye2eyeWeb.OrderController do
   alias Eye2eye.Orders.Order
   alias Eye2eye.{ShoppingCart, Catalog}
 
-  def create(conn, %{"order_attrs" => order_attrs}) do
-    attrs = %{
-      user_uuid: order_attrs["user_uuid"],
-      total_price: order_attrs["total_price"]
-    }
-
-    case Orders.complete_order(conn.assigns.cart, order_attrs) do
+  def create(conn, %{"order" => order_params}) do
+    case Orders.complete_order(conn.assigns.cart, order_params) do
       {:ok, order} ->
         conn
         |> put_flash(:info, "Order created successfully.")
