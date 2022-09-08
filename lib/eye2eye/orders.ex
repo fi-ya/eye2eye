@@ -10,7 +10,7 @@ defmodule Eye2eye.Orders do
   alias Eye2eye.Orders.Order
 
   @doc """
-  Returns list of orders.
+  Returns list of orders in descending order date.
 
   ## Examples
 
@@ -20,9 +20,7 @@ defmodule Eye2eye.Orders do
   """
 
   def list_orders() do
-    Order
-    |> Repo.all()
-    |> Repo.preload(:line_items)
+    Repo.all(from(o in Order, order_by: [desc: o.inserted_at], preload: :line_items))
   end
 
   @doc """
