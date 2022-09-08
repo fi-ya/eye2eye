@@ -16,12 +16,12 @@ defmodule Eye2eye.OrdersTest do
       product = create_product_fixture()
       cart = create_cart_fixture()
       cart_with_one_item = add_cart_item_fixture(cart, product)
-      IO.puts("cart_with_one_item: "<> inspect(cart_with_one_item))
+      IO.puts("cart_with_one_item: " <> inspect(cart_with_one_item))
 
       order = order_fixture(cart_with_one_item)
-      IO.puts("ORDER: "<> inspect(order))
+      IO.puts("ORDER: " <> inspect(order))
 
-      IO.puts("ORDER LIST: "<> inspect(Orders.list_orders()))
+      IO.puts("ORDER LIST: " <> inspect(Orders.list_orders()))
       assert Orders.list_orders() == [order]
     end
 
@@ -38,7 +38,7 @@ defmodule Eye2eye.OrdersTest do
       assert {:ok, %Order{} = order} =
                Orders.complete_order(cart_with_one_item, valid_order_attrs)
 
-               IO.puts("ORDER IN CREATE ORDER: "<> inspect(order))
+      IO.puts("ORDER IN CREATE ORDER: " <> inspect(order))
       assert order.total_price == Decimal.new("120.50")
       assert order.user_uuid == cart_with_one_item.user_uuid
 

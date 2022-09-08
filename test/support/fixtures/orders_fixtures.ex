@@ -12,12 +12,13 @@ defmodule Eye2eye.OrdersFixtures do
 
   """
 
-  def order_fixture(cart, attrs\\%{}) do
-  attrs = %{
-        user_uuid: cart.user_uuid,
-        total_price: ShoppingCart.total_cart_price(cart)
-      }
-      {:ok, order } = Eye2eye.Orders.complete_order(cart, attrs)
-      order
+  def order_fixture(cart, attrs \\ %{}) do
+    attrs = %{
+      user_uuid: cart.user_uuid,
+      total_price: ShoppingCart.total_cart_price(cart)
+    }
+
+    {:ok, order} = Eye2eye.Orders.complete_order(cart, attrs)
+    order
   end
 end
