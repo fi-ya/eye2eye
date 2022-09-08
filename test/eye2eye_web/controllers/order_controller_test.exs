@@ -8,9 +8,15 @@ defmodule Eye2eyeWeb.OrderControllerTest do
 
   @valid_cart_item_attrs %{quantity: 1}
 
+  defp create_product(_) do
+    product = create_product_fixture()
+    %{product: product}
+  end
+
   describe "create order" do
-    test "redirects to show empty cart message when order data is valid", %{conn: conn} do
-      product = create_product_fixture()
+    setup [:create_product]
+
+    test "redirects to show empty cart message when order data is valid", %{conn: conn, product: product} do
       conn = get(conn, Routes.product_path(conn, :index))
 
       {:ok, _cart_item} =
@@ -33,8 +39,7 @@ defmodule Eye2eyeWeb.OrderControllerTest do
       assert conn.assigns.cart.items == []
     end
 
-    test "renders errors when data is invalid", %{conn: conn} do
-      product = create_product_fixture()
+    test "renders errors when data is invalid", %{conn: conn, product: product} do
       conn = get(conn, Routes.product_path(conn, :index))
 
       {:ok, _cart_item} =

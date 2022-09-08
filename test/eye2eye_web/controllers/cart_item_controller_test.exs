@@ -1,15 +1,21 @@
 defmodule Eye2eyeWeb.CartItemControllerTest do
   use Eye2eyeWeb.ConnCase
-  
+
   import Eye2eye.CatalogFixtures
 
   @invalid_cart_item_attrs %{quantity: 150}
   @valid_cart_item_attrs %{quantity: 1}
 
+  defp create_product(_) do
+    product = create_product_fixture()
+    %{product: product}
+  end
+
   describe "create a cart item" do
+    setup [:create_product]
+
     test "redirects to product index route when cart item data is valid with success message",
-         %{conn: conn} do
-      product = create_product_fixture()
+         %{conn: conn, product: product} do
 
       conn =
         post(
@@ -28,8 +34,7 @@ defmodule Eye2eyeWeb.CartItemControllerTest do
       assert length(conn.assigns.cart.items) == 1
     end
 
-    test "renders errors when data is invalid", %{conn: conn} do
-      product = create_product_fixture()
+    test "renders errors when data is invalid", %{conn: conn, product: product} do
 
       conn =
         post(
