@@ -1,26 +1,30 @@
 defmodule Eye2eyeWeb.CartControllerTest do
   use Eye2eyeWeb.ConnCase
 
-  alias Eye2eye.Catalog
-  alias Eye2eye.{ShoppingCart, Catalog}
-
   import Eye2eye.CatalogFixtures
-  import Eye2eye.ShoppingCartFixtures
+
+  alias Eye2eye.ShoppingCart
 
   @valid_cart_item_attrs %{quantity: 1}
 
+  defp create_product(_) do
+    product = create_product_fixture()
+    %{product: product}
+  end
+
   describe "show" do
+    setup [:create_product]
+
     test "display message when cart empty", %{conn: conn} do
       conn = get(conn, Routes.cart_path(conn, :show))
 
       assert html_response(conn, 200) =~ "Your cart is empty"
     end
 
-    test "display cart item when there is an item in the cart", %{conn: conn} do
-      product = create_product_fixture()
+    test "display cart item when there is an item in the cart", %{conn: conn, product: product} do
       conn = get(conn, Routes.product_path(conn, :index))
 
-      {:ok, cart_item} =
+      {:ok, _cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
       conn = get(conn, Routes.cart_path(conn, :show))
@@ -32,12 +36,13 @@ defmodule Eye2eyeWeb.CartControllerTest do
   end
 
   describe "update" do
+    setup [:create_product]
     @invalid_cart_item_attrs %{quantity: 0}
 
     test "when item quantity one, display empty cart message when item quantity removed", %{
-      conn: conn
+      conn: conn,
+      product: product
     } do
-      product = create_product_fixture()
       conn = get(conn, Routes.product_path(conn, :index))
 
       {:ok, cart_item} =
@@ -60,8 +65,7 @@ defmodule Eye2eyeWeb.CartControllerTest do
       assert conn.assigns.cart.items == []
     end
 
-    test "renders errors when cart item data is invalid", %{conn: conn} do
-      product = create_product_fixture()
+    test "renders errors when cart item data is invalid", %{conn: conn, product: product} do
       conn = get(conn, Routes.product_path(conn, :index))
 
       {:ok, cart_item} =
@@ -83,11 +87,13 @@ defmodule Eye2eyeWeb.CartControllerTest do
       assert html_response(conn, 200) =~ "There was an error updating your cart"
     end
 
-    test "when item quantity two display updates when a cart item quantity removed", %{conn: conn} do
-      product = create_product_fixture()
+    test "when item quantity two display updates when a cart item quantity removed", %{
+      conn: conn,
+      product: product
+    } do
       conn = get(conn, Routes.product_path(conn, :index))
 
-      {:ok, cart_item_q1} =
+      {:ok, _cart_item_q1} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
       {:ok, cart_item_q2} =

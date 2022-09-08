@@ -8,7 +8,6 @@ defmodule Eye2eye.Orders do
   alias Eye2eye.Repo
   alias Eye2eye.ShoppingCart
   alias Eye2eye.Orders.Order
-  alias Eye2eye.Orders.LineItem
 
   @doc """
   Creates a order.

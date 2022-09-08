@@ -2,19 +2,27 @@ defmodule Eye2eyeWeb.OrderControllerTest do
   use Eye2eyeWeb.ConnCase
 
   import Eye2eye.CatalogFixtures
-  import Eye2eye.ShoppingCartFixtures
   import Eye2eye.OrdersFixtures
 
-  alias Eye2eye.{ShoppingCart, Catalog}
+  alias Eye2eye.{ShoppingCart}
 
   @valid_cart_item_attrs %{quantity: 1}
 
+  defp create_product(_) do
+    product = create_product_fixture()
+    %{product: product}
+  end
+
   describe "create order" do
-    test "redirects to show empty cart message when order data is valid", %{conn: conn} do
-      product = create_product_fixture()
+    setup [:create_product]
+
+    test "redirects to show empty cart message when order data is valid", %{
+      conn: conn,
+      product: product
+    } do
       conn = get(conn, Routes.product_path(conn, :index))
 
-      {:ok, cart_item} =
+      {:ok, _cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
       valid_order_params = %{
@@ -34,11 +42,10 @@ defmodule Eye2eyeWeb.OrderControllerTest do
       assert conn.assigns.cart.items == []
     end
 
-    test "renders errors when data is invalid", %{conn: conn} do
-      product = create_product_fixture()
+    test "renders errors when data is invalid", %{conn: conn, product: product} do
       conn = get(conn, Routes.product_path(conn, :index))
 
-      {:ok, cart_item} =
+      {:ok, _cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
 
       invalid_order_params = %{total_price: nil, user_uuid: conn.assigns.cart.user_uuid}
