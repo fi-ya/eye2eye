@@ -10,6 +10,22 @@ defmodule Eye2eye.Orders do
   alias Eye2eye.Orders.Order
 
   @doc """
+  Returns list of orders.
+
+  ## Examples
+
+      iex> list_orders()
+      [%Order{}, ...]
+
+  """
+
+  def list_orders() do
+    Order
+    |> Repo.all()
+    |> Repo.preload(:line_items)
+  end
+
+  @doc """
   Creates a order.
 
   First by mapping the cart items of the shopping
