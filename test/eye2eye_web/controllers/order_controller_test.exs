@@ -13,6 +13,14 @@ defmodule Eye2eyeWeb.OrderControllerTest do
     %{product: product}
   end
 
+  describe "index" do
+    test "lists all orders", %{conn: conn} do
+      conn = get(conn, Routes.order_path(conn, :index))
+      # IO.puts(" HTML: " <> inspect(conn.html_response))
+      assert html_response(conn, 200) =~ "Your Orders"
+    end
+  end
+
   describe "create order" do
     setup [:create_product]
 
