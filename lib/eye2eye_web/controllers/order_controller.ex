@@ -5,7 +5,6 @@ defmodule Eye2eyeWeb.OrderController do
 
   def index(conn, _params) do
     orders = Orders.list_orders()
-    IO.puts("INDEX ORDERS: " <> inspect(orders))
     render(conn, "index.html", orders: orders)
   end
 
