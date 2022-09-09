@@ -12,6 +12,16 @@ defmodule Eye2eye.OrdersTest do
   describe "orders" do
     @invalid_order_attrs %{total_price: nil, user_uuid: nil}
 
+    test "list_orders returns all orders" do
+      product = create_product_fixture()
+      cart = create_cart_fixture()
+      cart_with_one_item = add_cart_item_fixture(cart, product)
+
+      order = order_fixture(cart_with_one_item)
+
+      assert Orders.list_orders() == [order]
+    end
+
     test "complete_order with valid data creates an order and empties the shopping cart" do
       product = create_product_fixture()
       cart = create_cart_fixture()

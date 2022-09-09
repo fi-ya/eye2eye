@@ -3,9 +3,14 @@ defmodule Eye2eyeWeb.OrderController do
 
   alias Eye2eye.Orders
 
+  def index(conn, _params) do
+    orders = Orders.list_orders()
+    render(conn, "index.html", orders: orders)
+  end
+
   def create(conn, %{"order" => order_params}) do
     case Orders.complete_order(conn.assigns.cart, order_params) do
-      {:ok, _order} ->
+      {:ok, order} ->
         conn
         |> put_flash(:info, "Order created successfully.")
         |> redirect(to: Routes.cart_path(conn, :show))
