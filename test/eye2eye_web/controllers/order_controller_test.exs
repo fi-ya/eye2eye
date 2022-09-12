@@ -25,13 +25,17 @@ defmodule Eye2eyeWeb.OrderControllerTest do
 
     test "lists all orders when orders present", %{conn: conn, product: product} do
       conn = get(conn, Routes.product_path(conn, :index))
+
       {:ok, _cart_item} =
         ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
+
       conn = get(conn, Routes.cart_path(conn, :show))
+
       valid_order_params = %{
-          user_uuid: conn.assigns.cart.user_uuid,
-          total_price: Decimal.to_string(ShoppingCart.total_cart_price(conn.assigns.cart))
-        }
+        user_uuid: conn.assigns.cart.user_uuid,
+        total_price: Decimal.to_string(ShoppingCart.total_cart_price(conn.assigns.cart))
+      }
+
       conn = post(conn, Routes.order_path(conn, :create, order: valid_order_params))
 
       conn = get(conn, Routes.order_path(conn, :index))
