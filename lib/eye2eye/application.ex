@@ -10,8 +10,6 @@ defmodule Eye2eye.Application do
     children = [
       # Start the Ecto repository
       Eye2eye.Repo,
-      # Start the Telemetry supervisor
-      Eye2eyeWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Eye2eye.PubSub},
       # Start the Endpoint (http/https)
