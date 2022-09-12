@@ -16,10 +16,18 @@ defmodule Eye2eye.OrdersTest do
       product = create_product_fixture()
       cart = create_cart_fixture()
       cart_with_one_item = add_cart_item_fixture(cart, product)
-
       order = order_fixture(cart_with_one_item)
 
       assert Orders.list_orders() == [order]
+    end
+
+    test "get_order returns the order with given user_uuid" do
+      product = create_product_fixture()
+      cart = create_cart_fixture()
+      cart_with_one_item = add_cart_item_fixture(cart, product)
+      order = order_fixture(cart_with_one_item)
+
+      assert Orders.get_order!(cart.user_uuid, order.id).id == order.id
     end
 
     test "complete_order with valid data creates an order and empties the shopping cart" do
