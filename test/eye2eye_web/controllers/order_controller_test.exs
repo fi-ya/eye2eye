@@ -5,6 +5,7 @@ defmodule Eye2eyeWeb.OrderControllerTest do
   import Eye2eye.OrdersFixtures
 
   alias Eye2eye.{ShoppingCart}
+  alias Eye2eye.Orders
 
   @valid_cart_item_attrs %{quantity: 1}
 
@@ -38,14 +39,16 @@ defmodule Eye2eyeWeb.OrderControllerTest do
       }
 
       conn = post(conn, Routes.order_path(conn, :create, order: valid_order_params))
+      assert %{id: id} = redirected_params(conn)
 
-      assert redirected_to(conn) == Routes.cart_path(conn, :show)
+      order = Orders.get_order!(conn.assigns.current_uuid, id)
+      assert redirected_to(conn) == Routes.order_path(conn, :show, order)
 
-      conn = get(conn, Routes.cart_path(conn, :show))
+      conn = get(conn, Routes.order_path(conn, :show, order))
 
       assert html_response(conn, 200) =~ "Order created successfully."
-      assert html_response(conn, 200) =~ "Your cart is empty"
-      assert html_response(conn, 200) != "Product One"
+      assert html_response(conn, 200) =~ "Order Summary"
+      assert html_response(conn, 200) =~ "Product One"
       assert conn.assigns.cart.items == []
     end
 
@@ -64,6 +67,7 @@ defmodule Eye2eyeWeb.OrderControllerTest do
       conn = get(conn, Routes.cart_path(conn, :show))
 
       assert html_response(conn, 200) =~ "There was an error updating your cart"
+      assert length(conn.assigns.cart.items) == 1
     end
   end
 end
