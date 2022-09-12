@@ -8,6 +8,8 @@ This is the final capstone project of the [8th Light Apprenticeship](https://8th
   - [Run tests](#run-tests)
   - [Project requirements](#project-requirements)
   - [Implementation requirements](#implementation-requirements)
+  - [Style guide](#style-guide)
+  - [Demo](#demo)
   - [Learn more](#learn-more)
 
 ## Prerequisites
@@ -51,19 +53,24 @@ To run unit tests in the terminal:
 ## Project requirements
 - [x]  The home page of the website shows 10 products, which are stored and pulled from the database.
 - [x] The type of shop can be whatever you want but the products should at least show: name, image, price.
-- [ ] The user can add any of these products in any amount to a shopping cart, which should be displayed on the page and concurrently updated.
-- [ ] There is a link to click through to the checkout page, where the user can review their order and click ‘Pay’.
-- [ ] In this first iteration, we will not incorporate an actual payment system. Instead, the order details should be saved to the database when the user clicks ‘Pay’.
-- [ ] The user should be able to go to a ‘Previous orders’ page which pulls this data from the database.
+- [x] The user can add any of these products in any amount to a shopping cart, which should be displayed on the page and concurrently updated.
+- [x] There is a link to click through to the checkout page, where the user can review their order and click ‘Pay’.
+- [x] In this first iteration, we will not incorporate an actual payment system. Instead, the order details should be saved to the database when the user clicks ‘Pay’.
+- [x] The user should be able to go to a ‘Previous orders’ page which pulls this data from the database.
 
 ## Implementation requirements
 - [x] TDD
-- [ ] CI with linting and tests
+- [x] CI with linting and tests
 
 Since this is the first iteration of the app, the UI should be clear and functional but it does not require design at this stage, i.e. it should be completely basic. The app only needs to work locally, do not deploy it.Since this is the first iteration of the app, we do not expect any authentication/authorization.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## Style guide
+This project uses [mix format](https://hexdocs.pm/mix/master/Mix.Tasks.Format.html) and  [credo](https://github.com/rrrene/credo). You can find the configuration file for the formatter in the `.formatter.exs` file and code analysis in the `.credo.exs` file.
+
+## Demo
+[Screen Recording 2022-09-12 at 15.15.00 2.zip](https://github.com/fi-ya/eye2eye/files/9548851/Screen.Recording.2022-09-12.at.15.15.00.2.zip)
 ## Learn more
 
   * Official website: https://www.phoenixframework.org/
