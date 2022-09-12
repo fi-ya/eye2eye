@@ -70,9 +70,9 @@ Since this is the first iteration of the app, the UI should be clear and functio
 This project uses [mix format](https://hexdocs.pm/mix/master/Mix.Tasks.Format.html) and  [credo](https://github.com/rrrene/credo). You can find the configuration file for the formatter in the `.formatter.exs` file and code analysis in the `.credo.exs` file.
 
 ## Demo
-[Screen Recording 2022-09-12 at 15.15.00 2.zip](https://github.com/fi-ya/eye2eye/files/9548851/Screen.Recording.2022-09-12.at.15.15.00.2.zip)
-## Learn more
+[Demo](https://user-images.githubusercontent.com/69358550/189679486-82071ee5-8f72-4327-be5e-412821879ebc.mov)
 
+## Learn more
   * Official website: https://www.phoenixframework.org/
   * Guides: https://hexdocs.pm/phoenix/overview.html
   * Docs: https://hexdocs.pm/phoenix
