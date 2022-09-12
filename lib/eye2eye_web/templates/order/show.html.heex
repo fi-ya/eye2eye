@@ -1,0 +1,22 @@
+<h2>Order Summary</h2>
+<p>
+  <strong>Order ID:</strong>
+  <%= @order.id %>
+</p>
+<ul>
+  <%= for item <- @order.line_items do %>
+    <li class="cart">
+      <img src={item.product.image_url} alt={"An image of " <> item.product.name} class="cart_img">
+      <%= item.product.name %>
+      (<%= item.quantity %>) - £<%= item.price %>
+    </li>
+  <% end %>
+</ul>
+<p>
+  <strong>Total price:</strong>
+  £<%= @order.total_price %>
+</p>
+
+<span><%= link "Back to cart", to: Routes.cart_path(@conn, :show) %></span> | 
+<span><%= link "Continue shopping", to: Routes.product_path(@conn, :index) %></span> |
+<span><%= link "Show order history", to: Routes.order_path(@conn, :index) %></span>
