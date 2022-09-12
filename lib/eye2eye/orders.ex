@@ -9,63 +9,15 @@ defmodule Eye2eye.Orders do
   alias Eye2eye.ShoppingCart
   alias Eye2eye.Orders.Order
 
-  @doc """
-  Returns list of orders in descending order date.
-
-  ## Examples
-
-      iex> list_orders()
-      [%Order{}, ...]
-
-  """
-
   def list_orders() do
     Repo.all(from(o in Order, order_by: [desc: o.inserted_at], preload: :line_items))
   end
 
-  @doc """
-  Gets a single order by user_uuid and preload line_items and product.
-
-  Raises `Ecto.NoResultsError` if the Order does not exist.
-
-  ## Examples
-
-      iex> get_order!(1"7488a646-e31f-11e4-aace-600308960662"23)
-      %Order{}
-
-      iex> get_order!("7488a646-e31f-11e4-aace-600308960662")
-      ** (Ecto.NoResultsError)
-
-  """
   def get_order!(user_uuid, id) do
     Order
     |> Repo.get_by!(id: id, user_uuid: user_uuid)
     |> Repo.preload(line_items: [:product])
   end
-
-  @doc """
-  Creates a order.
-
-  First by mapping the cart items of the shopping
-  cart passed into a map of order line items structs
-  which captures the product id, price and quantity.
-
-  Then create an order changeset by passing in an empty
-  Order changeset and our changes
-  (user_uuid, total_price, line_items).
-
-  Next the order is inserted and the run operation to
-  prune the shopping cart
-
-  ## Examples
-
-      iex> create_order(%{field: value})
-      {:ok, %Order{}}
-
-      iex> create_order(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
 
   def complete_order(%ShoppingCart.Cart{} = cart, order_attrs) do
     line_items =
