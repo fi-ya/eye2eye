@@ -11,15 +11,6 @@ defmodule Eye2eye.ShoppingCart do
 
   @min_cart_item_price Decimal.new("0.00")
 
-  @doc """
-  Returns cart by user_uuid.
-
-  Fetches our cart and joins the cart items,
-  and their products so that we have the full cart
-  populated with all preloaded data.
-
-  """
-
   def get_cart_by_user_uuid(user_uuid) do
     Repo.one(
       from(c in Cart,
@@ -32,20 +23,6 @@ defmodule Eye2eye.ShoppingCart do
     )
   end
 
-  @doc """
-  Creates a cart using user uuid.
-
-  If insert successful reload cart contents
-
-  ## Examples
-
-      iex> create_cart(%{field: value})
-      {:ok, %Cart{}}
-
-      iex> create_cart(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def create_cart(user_uuid) do
     %Cart{user_uuid: user_uuid}
     |> Cart.changeset(%{})
@@ -56,28 +33,13 @@ defmodule Eye2eye.ShoppingCart do
     end
   end
 
-  @doc """
-  Reloads the cart by get_cart_by_user_uuid
-
-  """
-
   def reload_cart(%Cart{} = cart), do: get_cart_by_user_uuid(cart.user_uuid)
-
-  @doc """
-  Calculates the total cart items by adding together all cart_item.quantity
-
-  """
 
   def total_cart_items(%Cart{} = cart) do
     Enum.reduce(cart.items, 0, fn item, acc ->
       item.quantity + acc
     end)
   end
-
-  @doc """
-    Calculates the total cart price by adding together cart item totals
-
-  """
 
   def total_cart_price(%Cart{} = cart) do
     Enum.reduce(cart.items, @min_cart_item_price, fn item, acc ->
@@ -86,23 +48,6 @@ defmodule Eye2eye.ShoppingCart do
       |> Decimal.add(acc)
     end)
   end
-
-  @doc """
-  Gets a single cart_item by id and add product
-  associations to be preloaded into the result set.
-
-  Raises `Ecto.NoResultsError` if the Cart item does
-  not exist.
-
-  ## Examples
-
-      iex> get_cart_item!(123)
-      %CartItem{}
-
-      iex> get_cart_item!(456)
-      ** (Ecto.NoResultsError)
-
-  """
 
   def get_cart_item!(id) do
     Repo.one(
@@ -114,13 +59,6 @@ defmodule Eye2eye.ShoppingCart do
     )
   end
 
-  @doc """
-  Adds an item to cart.
-
-  Issue a Repo.insert call with a query to add a new cart item into the database,
-  or increase the quantity by one if it already exists in the cart.
-
-  """
   def add_item_to_cart(%Cart{} = cart, %Catalog.Product{} = product, cart_item_attrs) do
     %CartItem{}
     |> CartItem.changeset(cart_item_attrs)
@@ -135,20 +73,6 @@ defmodule Eye2eye.ShoppingCart do
   def total_item_price(%CartItem{} = item) do
     Decimal.mult(item.product.price, item.quantity)
   end
-
-  @doc """
-  Validate cart_item_attrs then updates a cart_item and
-  deletes if quantity is zero.
-
-  ## Examples
-
-      iex> update_cart_item(cart_item, %{field: new_value})
-      {:ok, %CartItem{}}
-
-      iex> update_cart_item(cart_item, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
 
   def update_cart_item(%CartItem{} = cart_item, cart_item_attrs) do
     update_attrs = reduce_item_quantity_by_one(cart_item_attrs)
@@ -169,11 +93,6 @@ defmodule Eye2eye.ShoppingCart do
     end
   end
 
-  @doc """
-  Reduces cart item quantity by one
-
-  """
-
   def reduce_item_quantity_by_one(cart_item_attrs, updated_attrs \\ %{}) do
     updated_quantity = cart_item_attrs.quantity - 1
 
@@ -181,10 +100,6 @@ defmodule Eye2eye.ShoppingCart do
     |> Enum.into(%{quantity: updated_quantity})
   end
 
-  @doc """
-  Deletes cart items for a given cart_id
-
-  """
   def prune_cart_items(%Cart{} = cart) do
     {_, _} = Repo.delete_all(from(i in CartItem, where: i.cart_id == ^cart.id))
     {:ok, reload_cart(cart)}
