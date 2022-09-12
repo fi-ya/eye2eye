@@ -15,9 +15,32 @@ defmodule Eye2eyeWeb.OrderControllerTest do
   end
 
   describe "index" do
-    test "lists all orders", %{conn: conn} do
+    setup [:create_product]
+
+    test "displays message when no orders present", %{conn: conn} do
       conn = get(conn, Routes.order_path(conn, :index))
       assert html_response(conn, 200) =~ "Your Orders"
+      assert html_response(conn, 200) =~ "You have not placed any orders"
+    end
+
+    test "lists all orders when orders present", %{conn: conn, product: product} do
+      conn = get(conn, Routes.product_path(conn, :index))
+      {:ok, _cart_item} =
+        ShoppingCart.add_item_to_cart(conn.assigns.cart, product, @valid_cart_item_attrs)
+      conn = get(conn, Routes.cart_path(conn, :show))
+      valid_order_params = %{
+          user_uuid: conn.assigns.cart.user_uuid,
+          total_price: Decimal.to_string(ShoppingCart.total_cart_price(conn.assigns.cart))
+        }
+      conn = post(conn, Routes.order_path(conn, :create, order: valid_order_params))
+
+      conn = get(conn, Routes.order_path(conn, :index))
+
+      assert html_response(conn, 200) =~ "Order ID"
+      assert html_response(conn, 200) =~ "Order Date"
+      assert html_response(conn, 200) =~ "Total Price"
+      assert html_response(conn, 200) =~ "120.50"
+      assert html_response(conn, 200) =~ "Show"
     end
   end
 
