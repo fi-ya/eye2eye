@@ -2,8 +2,8 @@
 <%= if @orders == [] do %>
   <p>You have not placed any orders</p>
 <% else %>
-  <table>
-    <thead>
+  <table class="text-center">
+    <thead class="font-lg">
       <tr>
         <th>Order ID</th>
         <th>Order Date</th>
@@ -12,7 +12,7 @@
         <th></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="font-md">
   <%= for order <- @orders do %>
     
       <tr>

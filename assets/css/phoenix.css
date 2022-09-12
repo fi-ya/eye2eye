@@ -109,6 +109,12 @@ header nav li {
 .font-sm{
   font-size: 1rem;
 }
+.font-md{
+  font-size: 1.1rem;
+}
+.font-lg{
+  font-size: 1.3rem;
+}
 
 .gap-sm{
   display: flex;
@@ -188,6 +194,7 @@ p, ul {
   gap:1rem;
   font-size: 1.1rem;
 }
+
 @media (min-width: 40.0rem) { /* Small devices (landscape phones, 576px and up) */
   header section {
     flex-direction: row;
