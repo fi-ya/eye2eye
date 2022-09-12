@@ -35,6 +35,10 @@ select {
   width: auto;
 }
 
+.width-lg{
+  width: 90vw;
+}
+
 /* Phoenix promo and logo */
 .phx-hero {
   text-align: center;
@@ -86,20 +90,13 @@ header nav li {
   text-align: right;
   white-space: nowrap;
 }
-/* header nav ul {
-  margin: 1rem;
-  margin-top: 0;
-} */
-/* header nav a {
-  display: block;
-} */
 
 .row__nav {
   display: flex;
   justify-content: flex-end;
-  width: 50vw;
+  /* width: 50vw; */
   gap: 1rem;
-  margin: 0 auto;
+  /* margin: 0 auto; */
 }
 
 .margin-none {
@@ -196,19 +193,7 @@ p, ul {
 }
 
 @media (min-width: 40.0rem) { /* Small devices (landscape phones, 576px and up) */
-  header section {
-    flex-direction: row;
-  }
-  header nav ul {
-    margin: 1rem;
-  }
-  .phx-logo {
-    flex-basis: 527px;
-    margin: 2rem 1rem;
-  }
-
   .row__nav {
-    max-width: 60rem;
     font-size: 2rem;
   }
 }
