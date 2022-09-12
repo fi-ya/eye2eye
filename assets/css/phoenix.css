@@ -121,6 +121,11 @@ header nav li {
   text-align: center;
 }
 
+.text-right{
+  text-align: right;
+}
+
+
 .color{
   color:#0069d9;
 }
@@ -177,6 +182,12 @@ p, ul {
   margin-bottom: 2.5rem;
 }
 
+.links-container{
+  display: flex;
+  justify-content: center;
+  gap:1rem;
+  font-size: 1.1rem;
+}
 @media (min-width: 40.0rem) { /* Small devices (landscape phones, 576px and up) */
   header section {
     flex-direction: row;

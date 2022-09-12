@@ -24,7 +24,7 @@
       </li>
     <% end %>
   </ul>
-  <div class="checkout-container">
+  <div class="checkout-container margin-bottom_md">
     <p><b>Total</b>: £<%= ShoppingCart.total_cart_price(@cart) %></p>
     <div class="btn"> 
       <%= link "Checkout", to: Routes.order_path(@conn, :create, order: %{user_uuid: @cart.user_uuid, total_price: Decimal.to_string(ShoppingCart.total_cart_price(@cart))}), 

@@ -1,8 +1,9 @@
 <h2>Order Summary</h2>
-<p>
+<p class="margin-bottom_md">
   <strong>Order ID:</strong>
   <%= @order.id %>
 </p>
+
 <ul>
   <%= for item <- @order.line_items do %>
     <li class="cart">
@@ -12,11 +13,13 @@
     </li>
   <% end %>
 </ul>
-<p>
+<p class="text-right margin-bottom_md">
   <strong>Total price:</strong>
   £<%= @order.total_price %>
 </p>
 
-<span><%= link "Back to cart", to: Routes.cart_path(@conn, :show) %></span> | 
-<span><%= link "Continue shopping", to: Routes.product_path(@conn, :index) %></span> |
-<span><%= link "Show order history", to: Routes.order_path(@conn, :index) %></span>
+<div class="links-container margin-bottom_md">
+  <span><%= link "Back to cart", to: Routes.cart_path(@conn, :show) %></span> | 
+  <span><%= link "Continue shopping", to: Routes.product_path(@conn, :index) %></span> |
+  <span><%= link "Show order history", to: Routes.order_path(@conn, :index) %></span>
+</div>
