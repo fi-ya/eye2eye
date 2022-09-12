@@ -14,7 +14,7 @@ defmodule Eye2eyeWeb.ProductControllerTest do
     test "lists all products", %{conn: conn} do
       conn = get(conn, Routes.product_path(conn, :index))
 
-      assert html_response(conn, 200) =~ "Summer 2022 Collection"
+      assert html_response(conn, 200) =~ "Autumn 2022 Collection"
       assert html_response(conn, 200) =~ "Product One"
       assert html_response(conn, 200) =~ "https://images.com/1"
       assert html_response(conn, 200) =~ "120.50"
