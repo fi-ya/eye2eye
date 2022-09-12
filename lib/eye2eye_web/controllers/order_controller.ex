@@ -13,12 +13,17 @@ defmodule Eye2eyeWeb.OrderController do
       {:ok, order} ->
         conn
         |> put_flash(:info, "Order created successfully.")
-        |> redirect(to: Routes.cart_path(conn, :show))
+        |> redirect(to: Routes.order_path(conn, :show, order))
 
       {:error, _changeset} ->
         conn
         |> put_flash(:error, "There was an error updating your cart")
         |> redirect(to: Routes.cart_path(conn, :show))
     end
+  end
+
+  def show(conn, %{"id" => id}) do
+    order = Orders.get_order!(conn.assigns.current_uuid, id)
+    render(conn, "show.html", order: order)
   end
 end

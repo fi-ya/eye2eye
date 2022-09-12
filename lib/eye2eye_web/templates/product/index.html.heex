@@ -2,11 +2,12 @@
   <h1><%= gettext("Welcome to %{name}!", name: "eye2eye") %></h1>
   <p>Not just your standard eyeware company</p>
 </section>
-
-<section class="">
-   <h2 class="text-center color">Summer 2022 Collection</h2>
+<div>
+   <h2 class="text-center color">Autumn 2022 Collection</h2>
+</div>
+<section class="flex_wrap">
    <%= for product <- @products do %>
-      <article class="column margin-bottom_md">
+      <article class="product-container margin-bottom_md">
          <img src={product.image_url} alt={"An image of " <> product.name} >
          <h2 class="margin-none"><%= product.name %></h2>
          <div class="gap-sm">

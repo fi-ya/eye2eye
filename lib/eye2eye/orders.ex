@@ -24,6 +24,26 @@ defmodule Eye2eye.Orders do
   end
 
   @doc """
+  Gets a single order by user_uuid and preload line_items and product.
+
+  Raises `Ecto.NoResultsError` if the Order does not exist.
+
+  ## Examples
+
+      iex> get_order!(1"7488a646-e31f-11e4-aace-600308960662"23)
+      %Order{}
+
+      iex> get_order!("7488a646-e31f-11e4-aace-600308960662")
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_order!(user_uuid, id) do
+    Order
+    |> Repo.get_by!(id: id, user_uuid: user_uuid)
+    |> Repo.preload(line_items: [:product])
+  end
+
+  @doc """
   Creates a order.
 
   First by mapping the cart items of the shopping
