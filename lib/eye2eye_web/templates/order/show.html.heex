@@ -3,19 +3,19 @@
   <strong>Order ID:</strong>
   <%= @order.id %>
 </p>
-
 <ul>
   <%= for item <- @order.line_items do %>
     <li class="cart">
       <img src={item.product.image_url} alt={"An image of " <> item.product.name} class="cart_img">
-      <%= item.product.name %>
-      (<%= item.quantity %>) - £<%= item.price %>
+      <span><%= item.product.name %></span>
+      <span>(<%= item.quantity %>) - </span>
+      <span>£<%= item.price %></span>
     </li>
   <% end %>
 </ul>
 <p class="text-right margin-bottom_md">
   <strong>Total price:</strong>
-  £<%= @order.total_price %>
+  <span>£<%= @order.total_price %></span>
 </p>
 
 <div class="links-container margin-bottom_md">
