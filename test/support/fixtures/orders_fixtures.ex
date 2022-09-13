@@ -6,11 +6,6 @@ defmodule Eye2eye.OrdersFixtures do
 
   alias Eye2eyeWeb.CartView
 
-  @doc """
-  Generates an order
-
-  """
-
   def order_fixture(cart, attrs \\ %{}) do
     attrs = %{
       user_uuid: cart.user_uuid,

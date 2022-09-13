@@ -5,16 +5,9 @@ defmodule Eye2eye.ShoppingCartFixtures do
   """
   @valid_cart_item_attrs %{quantity: 1}
 
-  @doc """
-  Generate a unique cart user_uuid.
-  """
   def unique_cart_user_uuid do
     Ecto.UUID.generate()
   end
-
-  @doc """
-  Generate a cart.
-  """
 
   def create_cart_fixture() do
     {:ok, cart} = Eye2eye.ShoppingCart.create_cart(unique_cart_user_uuid())
