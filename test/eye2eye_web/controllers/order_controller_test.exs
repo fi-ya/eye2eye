@@ -2,10 +2,10 @@ defmodule Eye2eyeWeb.OrderControllerTest do
   use Eye2eyeWeb.ConnCase
 
   import Eye2eye.CatalogFixtures
-  import Eye2eye.OrdersFixtures
 
   alias Eye2eye.{ShoppingCart}
   alias Eye2eye.Orders
+  alias Eye2eyeWeb.CartView
 
   @valid_cart_item_attrs %{quantity: 1}
 
@@ -33,7 +33,7 @@ defmodule Eye2eyeWeb.OrderControllerTest do
 
       valid_order_params = %{
         user_uuid: conn.assigns.cart.user_uuid,
-        total_price: Decimal.to_string(ShoppingCart.total_cart_price(conn.assigns.cart))
+        total_price: Decimal.to_string(CartView.total_cart_price(conn.assigns.cart))
       }
 
       conn = post(conn, Routes.order_path(conn, :create, order: valid_order_params))
@@ -62,7 +62,7 @@ defmodule Eye2eyeWeb.OrderControllerTest do
 
       valid_order_params = %{
         user_uuid: conn.assigns.cart.user_uuid,
-        total_price: Decimal.to_string(ShoppingCart.total_cart_price(conn.assigns.cart))
+        total_price: Decimal.to_string(CartView.total_cart_price(conn.assigns.cart))
       }
 
       conn = post(conn, Routes.order_path(conn, :create, order: valid_order_params))

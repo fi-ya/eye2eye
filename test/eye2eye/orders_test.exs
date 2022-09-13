@@ -8,6 +8,7 @@ defmodule Eye2eye.OrdersTest do
   alias Eye2eye.ShoppingCart
   alias Eye2eye.Orders
   alias Eye2eye.Orders.Order
+  alias Eye2eyeWeb.CartView
 
   describe "orders" do
     @invalid_order_attrs %{total_price: nil, user_uuid: nil}
@@ -37,7 +38,7 @@ defmodule Eye2eye.OrdersTest do
 
       valid_order_attrs = %{
         user_uuid: cart_with_one_item.user_uuid,
-        total_price: ShoppingCart.total_cart_price(cart_with_one_item)
+        total_price: CartView.total_cart_price(cart_with_one_item)
       }
 
       assert {:ok, %Order{} = order} =

@@ -2,7 +2,6 @@ defmodule Eye2eye.Orders do
   @moduledoc """
   The Orders context.
   """
-
   import Ecto.Query, warn: false
 
   alias Eye2eye.Repo
