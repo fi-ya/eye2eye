@@ -9,7 +9,12 @@ defmodule Eye2eye.Orders do
   alias Eye2eye.Orders.Order
 
   def list_orders() do
-    Repo.all(from(o in Order, order_by: [desc: o.inserted_at], preload: :line_items))
+    Repo.all(
+      from(o in Order,
+        order_by: [desc: o.inserted_at],
+        preload: :line_items
+      )
+    )
   end
 
   def get_order!(user_uuid, id) do
