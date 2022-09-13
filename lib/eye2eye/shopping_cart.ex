@@ -9,8 +9,6 @@ defmodule Eye2eye.ShoppingCart do
   alias Eye2eye.Catalog
   alias Eye2eye.ShoppingCart.{Cart, CartItem}
 
-  @min_cart_item_price Decimal.new("0.00")
-
   def get_cart_by_user_uuid(user_uuid) do
     Repo.one(
       from(c in Cart,
@@ -35,20 +33,6 @@ defmodule Eye2eye.ShoppingCart do
 
   def reload_cart(%Cart{} = cart), do: get_cart_by_user_uuid(cart.user_uuid)
 
-  # def total_cart_items(%Cart{} = cart) do
-  #   Enum.reduce(cart.items, 0, fn item, acc ->
-  #     item.quantity + acc
-  #   end)
-  # end
-
-  # def total_cart_price(%Cart{} = cart) do
-  #   Enum.reduce(cart.items, @min_cart_item_price, fn item, acc ->
-  #     item
-  #     |> total_item_price()
-  #     |> Decimal.add(acc)
-  #   end)
-  # end
-
   def get_cart_item!(id) do
     Repo.one(
       from(i in CartItem,
@@ -69,10 +53,6 @@ defmodule Eye2eye.ShoppingCart do
       conflict_target: [:cart_id, :product_id]
     )
   end
-
-  # def total_item_price(%CartItem{} = item) do
-  #   Decimal.mult(item.product.price, item.quantity)
-  # end
 
   def update_cart_item(%CartItem{} = cart_item, cart_item_attrs) do
     update_attrs = reduce_item_quantity_by_one(cart_item_attrs)
