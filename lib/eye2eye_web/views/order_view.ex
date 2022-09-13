@@ -2,10 +2,9 @@ defmodule Eye2eyeWeb.OrderView do
   use Eye2eyeWeb, :view
 
   def convert_naive_to_date_str(naive_date_time) do
-    date_str =
-      naive_date_time
-      |> NaiveDateTime.to_date()
-      |> Date.to_string()
+    naive_date_time
+    |> NaiveDateTime.to_date()
+    |> Date.to_string()
   end
 
   def format_date(date_str) do
