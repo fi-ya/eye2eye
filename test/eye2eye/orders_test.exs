@@ -8,36 +8,40 @@ defmodule Eye2eye.OrdersTest do
   alias Eye2eye.ShoppingCart
   alias Eye2eye.Orders
   alias Eye2eye.Orders.Order
+  alias Eye2eyeWeb.CartView
+
+  defp create_cart_with_item(_) do
+    product = create_product_fixture()
+    cart = create_cart_fixture()
+    cart_with_one_item = add_cart_item_fixture(cart, product)
+    %{cart_with_one_item: cart_with_one_item}
+  end
 
   describe "orders" do
+    setup [:create_cart_with_item]
+
     @invalid_order_attrs %{total_price: nil, user_uuid: nil}
 
-    test "list_orders returns all orders" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
-      cart_with_one_item = add_cart_item_fixture(cart, product)
+    test "list_orders/0 returns all orders", %{cart_with_one_item: cart_with_one_item} do
       order = order_fixture(cart_with_one_item)
 
       assert Orders.list_orders() == [order]
     end
 
-    test "get_order returns the order with given user_uuid" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
-      cart_with_one_item = add_cart_item_fixture(cart, product)
+    test "get_order/2 returns the order with given user_uuid", %{
+      cart_with_one_item: cart_with_one_item
+    } do
       order = order_fixture(cart_with_one_item)
 
-      assert Orders.get_order!(cart.user_uuid, order.id).id == order.id
+      assert Orders.get_order!(cart_with_one_item.user_uuid, order.id).id == order.id
     end
 
-    test "complete_order with valid data creates an order and empties the shopping cart" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
-      cart_with_one_item = add_cart_item_fixture(cart, product)
-
+    test "complete_order/2 with valid data creates an order and empties the shopping cart", %{
+      cart_with_one_item: cart_with_one_item
+    } do
       valid_order_attrs = %{
         user_uuid: cart_with_one_item.user_uuid,
-        total_price: ShoppingCart.total_cart_price(cart_with_one_item)
+        total_price: CartView.total_cart_price(cart_with_one_item)
       }
 
       assert {:ok, %Order{} = order} =
@@ -51,11 +55,9 @@ defmodule Eye2eye.OrdersTest do
       assert reload_cart.items == []
     end
 
-    test "complete_order with invalid order data returns error changeset" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
-      cart_with_one_item = add_cart_item_fixture(cart, product)
-
+    test "complete_order/2 with invalid order data returns error changeset", %{
+      cart_with_one_item: cart_with_one_item
+    } do
       assert {:error, %Ecto.Changeset{}} =
                Orders.complete_order(cart_with_one_item, @invalid_order_attrs)
     end
