@@ -8,7 +8,7 @@ defmodule Eye2eye.CatalogFixtures do
     image_url: "https://images.com/1",
     price: "120.50"
   }
- 
+
   def create_product_fixture(attrs \\ %{}, product_attrs \\ @product_one_attrs) do
     {:ok, product} =
       attrs

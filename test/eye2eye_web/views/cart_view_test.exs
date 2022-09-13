@@ -22,7 +22,7 @@ defmodule Eye2eyeWeb.CartViewTest do
     price: "100.00"
   }
 
-  describe "total_cart_items" do
+  describe "total_cart_items/1" do
     setup [:create_product, :create_cart]
 
     test "when no cart items returns valid integer", %{cart: cart} do
@@ -35,14 +35,20 @@ defmodule Eye2eyeWeb.CartViewTest do
       assert CartView.total_cart_items(cart_with_one_item) == 1
     end
 
-    test "when one cart item with quantity two returns valid integer", %{cart: cart, product: product} do
+    test "when one cart item with quantity two returns valid integer", %{
+      cart: cart,
+      product: product
+    } do
       cart_with_item_q1 = add_cart_item_fixture(cart, product)
       cart_with_item_q2 = add_cart_item_fixture(cart_with_item_q1, product)
 
       assert CartView.total_cart_items(cart_with_item_q2) == 2
     end
 
-    test "when two cart items with different quantities returns valid integer", %{cart: cart, product: product} do
+    test "when two cart items with different quantities returns valid integer", %{
+      cart: cart,
+      product: product
+    } do
       cart_with_item_q1 = add_cart_item_fixture(cart, product)
       cart_with_item_q2 = add_cart_item_fixture(cart_with_item_q1, product)
       product_two = create_product_fixture(@product_two_attrs)
@@ -52,7 +58,7 @@ defmodule Eye2eyeWeb.CartViewTest do
     end
   end
 
-  describe "total_cart_price" do
+  describe "total_cart_price/1" do
     setup [:create_product, :create_cart]
 
     test "when cart empty returns valid decimal", %{cart: cart} do
@@ -74,10 +80,13 @@ defmodule Eye2eyeWeb.CartViewTest do
     end
   end
 
-  describe "total_item_price" do
+  describe "total_item_price/1" do
     setup [:create_product, :create_cart]
 
-    test "where one cart item present with quantity one returns valid decimal", %{cart: cart, product: product} do
+    test "where one cart item present with quantity one returns valid decimal", %{
+      cart: cart,
+      product: product
+    } do
       cart_with_one_item = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item.items)
 
@@ -86,7 +95,10 @@ defmodule Eye2eyeWeb.CartViewTest do
       assert CartView.total_item_price(cart_item) === Decimal.new("120.50")
     end
 
-    test "where one cart item present with quantity two returns valid decimal", %{cart: cart, product: product} do
+    test "where one cart item present with quantity two returns valid decimal", %{
+      cart: cart,
+      product: product
+    } do
       _cart_with_one_item_q1 = add_cart_item_fixture(cart, product)
       cart_with_one_item_q2 = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item_q2.items)

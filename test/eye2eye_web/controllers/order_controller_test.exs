@@ -19,6 +19,7 @@ defmodule Eye2eyeWeb.OrderControllerTest do
 
     test "displays message when no orders present", %{conn: conn} do
       conn = get(conn, Routes.order_path(conn, :index))
+
       assert html_response(conn, 200) =~ "Your Orders"
       assert html_response(conn, 200) =~ "You have not placed any orders"
     end

@@ -28,13 +28,17 @@ defmodule Eye2eye.OrdersTest do
       assert Orders.list_orders() == [order]
     end
 
-    test "get_order/2 returns the order with given user_uuid", %{cart_with_one_item: cart_with_one_item} do
+    test "get_order/2 returns the order with given user_uuid", %{
+      cart_with_one_item: cart_with_one_item
+    } do
       order = order_fixture(cart_with_one_item)
 
       assert Orders.get_order!(cart_with_one_item.user_uuid, order.id).id == order.id
     end
 
-    test "complete_order/2 with valid data creates an order and empties the shopping cart", %{cart_with_one_item: cart_with_one_item} do
+    test "complete_order/2 with valid data creates an order and empties the shopping cart", %{
+      cart_with_one_item: cart_with_one_item
+    } do
       valid_order_attrs = %{
         user_uuid: cart_with_one_item.user_uuid,
         total_price: CartView.total_cart_price(cart_with_one_item)
@@ -51,7 +55,9 @@ defmodule Eye2eye.OrdersTest do
       assert reload_cart.items == []
     end
 
-    test "complete_order/2 with invalid order data returns error changeset", %{cart_with_one_item: cart_with_one_item}do
+    test "complete_order/2 with invalid order data returns error changeset", %{
+      cart_with_one_item: cart_with_one_item
+    } do
       assert {:error, %Ecto.Changeset{}} =
                Orders.complete_order(cart_with_one_item, @invalid_order_attrs)
     end

@@ -57,9 +57,12 @@ defmodule Eye2eye.ShoppingCartTest do
       assert ShoppingCart.get_cart_item!(cart_item.id) == cart_item
     end
 
-    test "add_item_to_cart/3 when cart is empty returns updated cart", %{cart: cart, product: product}  do
-
+    test "add_item_to_cart/3 when cart is empty returns updated cart", %{
+      cart: cart,
+      product: product
+    } do
       assert cart.items == []
+
       assert {:ok, %CartItem{} = _cart_item} =
                ShoppingCart.add_item_to_cart(cart, product, @valid_cart_item_attrs)
 
@@ -68,10 +71,14 @@ defmodule Eye2eye.ShoppingCartTest do
       assert length(reload_cart.items) == 1
     end
 
-    test "add_item_to_cart/3 when cart already has one item returns updated cart", %{cart: cart, product: product}  do
+    test "add_item_to_cart/3 when cart already has one item returns updated cart", %{
+      cart: cart,
+      product: product
+    } do
       product_two = create_product_fixture(@product_two_attrs)
 
       assert cart.items == []
+
       assert {:ok, %CartItem{} = _cart_item} =
                ShoppingCart.add_item_to_cart(cart, product, @valid_cart_item_attrs)
 
@@ -89,9 +96,12 @@ defmodule Eye2eye.ShoppingCartTest do
       assert length(cart_with_item_two.items) == 2
     end
 
-    test "add_item_to_cart/3 when cart has the item already returns no increase in length", %{cart: cart, product: product}  do
-
+    test "add_item_to_cart/3 when cart has the item already returns no increase in length", %{
+      cart: cart,
+      product: product
+    } do
       assert cart.items == []
+
       assert {:ok, %CartItem{} = _cart_item_one} =
                ShoppingCart.add_item_to_cart(cart, product, @valid_cart_item_attrs)
 
@@ -109,43 +119,58 @@ defmodule Eye2eye.ShoppingCartTest do
       assert length(cart_with_item_q2.items) == 1
     end
 
-    test "update_cart_item/2 where one item with one quantity returns updated cart without item" , %{cart: cart, product: product} do
+    test "update_cart_item/2 where one item with one quantity returns updated cart without item",
+         %{cart: cart, product: product} do
       cart_with_one_item = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item.items)
       cart_item_attrs = %{quantity: cart_item.quantity}
 
       assert length(cart_with_one_item.items) == 1
       assert cart_item.quantity == 1
+
       assert {:ok, %CartItem{} = updated_cart_item} =
                ShoppingCart.update_cart_item(cart_item, cart_item_attrs)
+
       assert updated_cart_item.quantity == 0
 
       updated_cart = ShoppingCart.reload_cart(cart_with_one_item)
       assert Enum.empty?(updated_cart.items)
     end
 
-    test "update_cart_item/2 where one item with two quantity returns updated cart quantity", %{cart: cart, product: product}  do
+    test "update_cart_item/2 where one item with two quantity returns updated cart quantity", %{
+      cart: cart,
+      product: product
+    } do
       _cart_with_one_item_q1 = add_cart_item_fixture(cart, product)
       cart_with_one_item_q2 = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item_q2.items)
       cart_item_attrs = %{quantity: cart_item.quantity}
 
       assert cart_item.quantity == 2
+
       assert {:ok, %CartItem{} = updated_cart_item} =
                ShoppingCart.update_cart_item(cart_item, cart_item_attrs)
+
       assert updated_cart_item.quantity == 1
     end
 
-    test "update_cart_item/2 with invalid cart item quantity data returns error changeset", %{cart: cart, product: product}  do
+    test "update_cart_item/2 with invalid cart item quantity data returns error changeset", %{
+      cart: cart,
+      product: product
+    } do
       cart_with_one_item = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item.items)
 
       assert {:error, %Ecto.Changeset{}} =
                ShoppingCart.update_cart_item(cart_item, @invalid_cart_item_attrs)
+
       assert cart_item.quantity == 1
     end
 
-    test "reduce_item_quantity_by_one/1 where quantity is one returns correct integer", %{cart: cart, product: product}  do
+    test "reduce_item_quantity_by_one/1 where quantity is one returns correct integer", %{
+      cart: cart,
+      product: product
+    } do
       cart_with_one_item = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item.items)
 
@@ -154,7 +179,10 @@ defmodule Eye2eye.ShoppingCartTest do
       assert Map.has_key?(ShoppingCart.reduce_item_quantity_by_one(cart_item), :quantity)
     end
 
-    test "reduce_item_quantity_by_one/1 where quantity is two returns correct integer", %{cart: cart, product: product}  do
+    test "reduce_item_quantity_by_one/1 where quantity is two returns correct integer", %{
+      cart: cart,
+      product: product
+    } do
       _cart_with_one_item_q1 = add_cart_item_fixture(cart, product)
       cart_with_one_item_q2 = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item_q2.items)
@@ -163,7 +191,7 @@ defmodule Eye2eye.ShoppingCartTest do
       assert ShoppingCart.reduce_item_quantity_by_one(cart_item).quantity == 1
     end
 
-    test "prune_cart_items/1 returns an empty cart", %{cart: cart, product: product}  do
+    test "prune_cart_items/1 returns an empty cart", %{cart: cart, product: product} do
       cart_with_one_item = add_cart_item_fixture(cart, product)
 
       assert {:ok, %Cart{} = cart} = ShoppingCart.prune_cart_items(cart_with_one_item)
