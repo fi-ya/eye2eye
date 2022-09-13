@@ -34,63 +34,63 @@ defmodule Eye2eye.ShoppingCartTest do
       assert {:error, %Ecto.Changeset{}} = ShoppingCart.create_cart(@invalid_attrs.user_uuid)
     end
 
-    test "total_cart_items when no cart items returns valid integer" do
-      cart = create_cart_fixture()
+    # test "total_cart_items when no cart items returns valid integer" do
+    #   cart = create_cart_fixture()
 
-      assert ShoppingCart.total_cart_items(cart) == 0
-    end
+    #   assert ShoppingCart.total_cart_items(cart) == 0
+    # end
 
-    test "total_cart_items when one cart item returns valid integer" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
-      cart_with_one_item = add_cart_item_fixture(cart, product)
+    # test "total_cart_items when one cart item returns valid integer" do
+    #   product = create_product_fixture()
+    #   cart = create_cart_fixture()
+    #   cart_with_one_item = add_cart_item_fixture(cart, product)
 
-      assert ShoppingCart.total_cart_items(cart_with_one_item) == 1
-    end
+    #   assert ShoppingCart.total_cart_items(cart_with_one_item) == 1
+    # end
 
-    test "total_cart_items when one cart item with quantity two returns valid integer" do
-      product_one = create_product_fixture()
-      cart = create_cart_fixture()
-      cart_with_item_q1 = add_cart_item_fixture(cart, product_one)
-      cart_with_item_q2 = add_cart_item_fixture(cart_with_item_q1, product_one)
+    # test "total_cart_items when one cart item with quantity two returns valid integer" do
+    #   product_one = create_product_fixture()
+    #   cart = create_cart_fixture()
+    #   cart_with_item_q1 = add_cart_item_fixture(cart, product_one)
+    #   cart_with_item_q2 = add_cart_item_fixture(cart_with_item_q1, product_one)
 
-      assert ShoppingCart.total_cart_items(cart_with_item_q2) == 2
-    end
+    #   assert ShoppingCart.total_cart_items(cart_with_item_q2) == 2
+    # end
 
-    test "total_cart_items when two cart items with different quantities returns valid integer" do
-      product_one = create_product_fixture()
-      product_two = create_product_fixture(@product_two_attrs)
-      cart = create_cart_fixture()
-      cart_with_item_q1 = add_cart_item_fixture(cart, product_one)
-      cart_with_item_q2 = add_cart_item_fixture(cart_with_item_q1, product_one)
-      cart_with_item_q3 = add_cart_item_fixture(cart_with_item_q2, product_two)
+    # test "total_cart_items when two cart items with different quantities returns valid integer" do
+    #   product_one = create_product_fixture()
+    #   product_two = create_product_fixture(@product_two_attrs)
+    #   cart = create_cart_fixture()
+    #   cart_with_item_q1 = add_cart_item_fixture(cart, product_one)
+    #   cart_with_item_q2 = add_cart_item_fixture(cart_with_item_q1, product_one)
+    #   cart_with_item_q3 = add_cart_item_fixture(cart_with_item_q2, product_two)
 
-      assert ShoppingCart.total_cart_items(cart_with_item_q3) == 3
-    end
+    #   assert ShoppingCart.total_cart_items(cart_with_item_q3) == 3
+    # end
 
-    test "total_cart_price when cart empty returns valid decimal" do
-      cart = create_cart_fixture()
+    # test "total_cart_price when cart empty returns valid decimal" do
+    #   cart = create_cart_fixture()
 
-      assert ShoppingCart.total_cart_price(cart) === Decimal.new("0.00")
-    end
+    #   assert ShoppingCart.total_cart_price(cart) === Decimal.new("0.00")
+    # end
 
-    test "total_cart_price when cart has one item returns valid decimal" do
-      product_one = create_product_fixture()
-      cart = create_cart_fixture()
-      cart_with_item_q1 = add_cart_item_fixture(cart, product_one)
+    # test "total_cart_price when cart has one item returns valid decimal" do
+    #   product_one = create_product_fixture()
+    #   cart = create_cart_fixture()
+    #   cart_with_item_q1 = add_cart_item_fixture(cart, product_one)
 
-      assert ShoppingCart.total_cart_price(cart_with_item_q1) === Decimal.new("120.50")
-    end
+    #   assert ShoppingCart.total_cart_price(cart_with_item_q1) === Decimal.new("120.50")
+    # end
 
-    test "total_cart_price when cart has two items returns valid decimal" do
-      product_one = create_product_fixture()
-      product_two = create_product_fixture(@product_two_attrs)
-      cart = create_cart_fixture()
-      cart_with_item1 = add_cart_item_fixture(cart, product_one)
-      cart_with_item2 = add_cart_item_fixture(cart_with_item1, product_two)
+    # test "total_cart_price when cart has two items returns valid decimal" do
+    #   product_one = create_product_fixture()
+    #   product_two = create_product_fixture(@product_two_attrs)
+    #   cart = create_cart_fixture()
+    #   cart_with_item1 = add_cart_item_fixture(cart, product_one)
+    #   cart_with_item2 = add_cart_item_fixture(cart_with_item1, product_two)
 
-      assert ShoppingCart.total_cart_price(cart_with_item2) === Decimal.new("220.50")
-    end
+    #   assert ShoppingCart.total_cart_price(cart_with_item2) === Decimal.new("220.50")
+    # end
   end
 
   describe "cart_items" do
@@ -167,28 +167,28 @@ defmodule Eye2eye.ShoppingCartTest do
       assert length(cart_with_item_q2.items) == 1
     end
 
-    test "total_item_price where one cart item present with quantity one returns valid decimal" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
-      cart_with_one_item = add_cart_item_fixture(cart, product)
-      cart_item = List.first(cart_with_one_item.items)
+    # test "total_item_price where one cart item present with quantity one returns valid decimal" do
+    #   product = create_product_fixture()
+    #   cart = create_cart_fixture()
+    #   cart_with_one_item = add_cart_item_fixture(cart, product)
+    #   cart_item = List.first(cart_with_one_item.items)
 
-      assert cart_item.product.price === Decimal.new("120.50")
-      assert cart_item.quantity === 1
-      assert ShoppingCart.total_item_price(cart_item) === Decimal.new("120.50")
-    end
+    #   assert cart_item.product.price === Decimal.new("120.50")
+    #   assert cart_item.quantity === 1
+    #   assert ShoppingCart.total_item_price(cart_item) === Decimal.new("120.50")
+    # end
 
-    test "total_item_price where one cart item present with quantity two returns valid decimal" do
-      product_one = create_product_fixture()
-      cart = create_cart_fixture()
-      _cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
-      cart_with_one_item_q2 = add_cart_item_fixture(cart, product_one)
-      cart_item = List.first(cart_with_one_item_q2.items)
+    # test "total_item_price where one cart item present with quantity two returns valid decimal" do
+    #   product_one = create_product_fixture()
+    #   cart = create_cart_fixture()
+    #   _cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
+    #   cart_with_one_item_q2 = add_cart_item_fixture(cart, product_one)
+    #   cart_item = List.first(cart_with_one_item_q2.items)
 
-      assert cart_item.product.price === Decimal.new("120.50")
-      assert cart_item.quantity === 2
-      assert ShoppingCart.total_item_price(cart_item) === Decimal.new("241.00")
-    end
+    #   assert cart_item.product.price === Decimal.new("120.50")
+    #   assert cart_item.quantity === 2
+    #   assert ShoppingCart.total_item_price(cart_item) === Decimal.new("241.00")
+    # end
 
     test "update_cart_item where one item with one quantity returns updated cart without item" do
       product = create_product_fixture()
