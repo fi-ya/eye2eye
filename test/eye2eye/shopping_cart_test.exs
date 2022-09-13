@@ -8,19 +8,26 @@ defmodule Eye2eye.ShoppingCartTest do
   import Eye2eye.ShoppingCartFixtures
   import Eye2eye.CatalogFixtures
 
+  defp create_product(_) do
+    product = create_product_fixture()
+    %{product: product}
+  end
+
+  defp create_cart(_) do
+    cart = create_cart_fixture()
+    %{cart: cart}
+  end
+
   @valid_cart_item_attrs %{quantity: 1}
 
   describe "carts" do
+    setup [:create_cart]
+
     @valid_attrs %{user_uuid: "7488a646-e31f-11e4-aace-600308960662"}
     @invalid_attrs %{user_uuid: nil}
-    @product_two_attrs %{
-      name: "Product Two",
-      image_url: "https://images.com/2",
-      price: "100.00"
-    }
 
-    test "get_cart_by_user_uuid returns cart" do
-      cart = create_cart_fixture()
+    test "get_cart_by_user_uuid returns cart", %{cart: cart} do
+      # cart = create_cart_fixture()
 
       assert ShoppingCart.get_cart_by_user_uuid(cart.user_uuid) == cart
     end
@@ -94,20 +101,27 @@ defmodule Eye2eye.ShoppingCartTest do
   end
 
   describe "cart_items" do
-    @invalid_cart_item_attrs %{quantity: 0}
+    setup [:create_product, :create_cart]
 
-    test "get_cart_item!/1 returns the cart_item with given id" do
-      cart = create_cart_fixture()
-      product = create_product_fixture()
+    @invalid_cart_item_attrs %{quantity: 0}
+    @product_two_attrs %{
+      name: "Product Two",
+      image_url: "https://images.com/2",
+      price: "100.00"
+    }
+
+    test "get_cart_item!/1 returns the cart_item with given id", %{cart: cart, product: product} do
+      # cart = create_cart_fixture()
+      # product = create_product_fixture()
       cart_with_item = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_item.items)
 
       assert ShoppingCart.get_cart_item!(cart_item.id) == cart_item
     end
 
-    test "add_item_to_cart when cart is empty returns updated cart" do
-      cart = create_cart_fixture()
-      product = create_product_fixture()
+    test "add_item_to_cart when cart is empty returns updated cart", %{cart: cart, product: product}  do
+      # cart = create_cart_fixture()
+      # product = create_product_fixture()
 
       assert cart.items == []
 
@@ -119,15 +133,15 @@ defmodule Eye2eye.ShoppingCartTest do
       assert length(reload_cart.items) == 1
     end
 
-    test "add_item_to_cart when cart already has one item returns updated cart" do
-      cart = create_cart_fixture()
-      product_one = create_product_fixture()
+    test "add_item_to_cart when cart already has one item returns updated cart", %{cart: cart, product: product}  do
+      # cart = create_cart_fixture()
+      # product_one = create_product_fixture()
       product_two = create_product_fixture(@product_two_attrs)
 
       assert cart.items == []
 
       assert {:ok, %CartItem{} = _cart_item} =
-               ShoppingCart.add_item_to_cart(cart, product_one, @valid_cart_item_attrs)
+               ShoppingCart.add_item_to_cart(cart, product, @valid_cart_item_attrs)
 
       cart_with_item_one = ShoppingCart.reload_cart(cart)
 
@@ -143,22 +157,22 @@ defmodule Eye2eye.ShoppingCartTest do
       assert length(cart_with_item_two.items) == 2
     end
 
-    test "add_item_to_cart when cart has the item already returns no increase in length" do
-      cart = create_cart_fixture()
-      _product_one = create_product_fixture()
-      product_one = create_product_fixture()
+    test "add_item_to_cart when cart has the item already returns no increase in length", %{cart: cart, product: product}  do
+      # cart = create_cart_fixture()
+      # _product_one = create_product_fixture()
+      # product_one = create_product_fixture()
 
       assert cart.items == []
 
       assert {:ok, %CartItem{} = _cart_item_one} =
-               ShoppingCart.add_item_to_cart(cart, product_one, @valid_cart_item_attrs)
+               ShoppingCart.add_item_to_cart(cart, product, @valid_cart_item_attrs)
 
       cart_with_item_q1 = ShoppingCart.reload_cart(cart)
 
       assert {:ok, %CartItem{} = _cart_item_two} =
                ShoppingCart.add_item_to_cart(
                  cart_with_item_q1,
-                 product_one,
+                 product,
                  @valid_cart_item_attrs
                )
 
@@ -190,9 +204,9 @@ defmodule Eye2eye.ShoppingCartTest do
     #   assert ShoppingCart.total_item_price(cart_item) === Decimal.new("241.00")
     # end
 
-    test "update_cart_item where one item with one quantity returns updated cart without item" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
+    test "update_cart_item where one item with one quantity returns updated cart without item" , %{cart: cart, product: product} do
+      # product = create_product_fixture()
+      # cart = create_cart_fixture()
       cart_with_one_item = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item.items)
       cart_item_attrs = %{quantity: cart_item.quantity}
@@ -209,11 +223,11 @@ defmodule Eye2eye.ShoppingCartTest do
       assert Enum.empty?(updated_cart.items)
     end
 
-    test "update_cart_item where one item with two quantity returns updated cart quantity" do
-      product_one = create_product_fixture()
-      cart = create_cart_fixture()
-      _cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
-      cart_with_one_item_q2 = add_cart_item_fixture(cart, product_one)
+    test "update_cart_item where one item with two quantity returns updated cart quantity", %{cart: cart, product: product}  do
+      # product_one = create_product_fixture()
+      # cart = create_cart_fixture()
+      _cart_with_one_item_q1 = add_cart_item_fixture(cart, product)
+      cart_with_one_item_q2 = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item_q2.items)
       cart_item_attrs = %{quantity: cart_item.quantity}
 
@@ -225,9 +239,9 @@ defmodule Eye2eye.ShoppingCartTest do
       assert updated_cart_item.quantity == 1
     end
 
-    test "update_cart_item with invalid cart item quantity data returns error changeset" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
+    test "update_cart_item with invalid cart item quantity data returns error changeset", %{cart: cart, product: product}  do
+      # product = create_product_fixture()
+      # cart = create_cart_fixture()
       cart_with_one_item = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item.items)
 
@@ -237,9 +251,9 @@ defmodule Eye2eye.ShoppingCartTest do
       assert cart_item.quantity == 1
     end
 
-    test "reduce_item_quantity_by_one where quantity is one returns correct integer" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
+    test "reduce_item_quantity_by_one where quantity is one returns correct integer", %{cart: cart, product: product}  do
+      # product = create_product_fixture()
+      # cart = create_cart_fixture()
       cart_with_one_item = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item.items)
 
@@ -248,20 +262,20 @@ defmodule Eye2eye.ShoppingCartTest do
       assert Map.has_key?(ShoppingCart.reduce_item_quantity_by_one(cart_item), :quantity)
     end
 
-    test "reduce_item_quantity_by_one where quantity is two returns correct integer" do
-      product_one = create_product_fixture()
-      cart = create_cart_fixture()
-      _cart_with_one_item_q1 = add_cart_item_fixture(cart, product_one)
-      cart_with_one_item_q2 = add_cart_item_fixture(cart, product_one)
+    test "reduce_item_quantity_by_one where quantity is two returns correct integer", %{cart: cart, product: product}  do
+      # product_one = create_product_fixture()
+      # cart = create_cart_fixture()
+      _cart_with_one_item_q1 = add_cart_item_fixture(cart, product)
+      cart_with_one_item_q2 = add_cart_item_fixture(cart, product)
       cart_item = List.first(cart_with_one_item_q2.items)
 
       assert cart_item.quantity == 2
       assert ShoppingCart.reduce_item_quantity_by_one(cart_item).quantity == 1
     end
 
-    test "prune_cart_items returns an empty cart" do
-      product = create_product_fixture()
-      cart = create_cart_fixture()
+    test "prune_cart_items returns an empty cart", %{cart: cart, product: product}  do
+      # product = create_product_fixture()
+      # cart = create_cart_fixture()
       cart_with_one_item = add_cart_item_fixture(cart, product)
 
       assert {:ok, %Cart{} = cart} = ShoppingCart.prune_cart_items(cart_with_one_item)
