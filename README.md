@@ -1,6 +1,6 @@
 # Eye2eye
 
-[![codecov](https://codecov.io/gh/fi-ya/eye2eye/branch/main/graph/badge.svg?token=1xLXQvDxNA)](https://codecov.io/gh/fi-ya/eye2eye)
+[![codecov](https://codecov.io/gh/fi-ya/eye2eye/branch/main/graph/badge.svg?token=EF86S3KA7W)](https://codecov.io/gh/fi-ya/eye2eye)
 
 This is the final capstone project of the [8th Light Apprenticeship](https://8thlight.com/blog/tags/apprenticeship.html). It started on Monday 22 August 2022 and will last for 15 working days, concluding on Tuesday 13 September 2022. My mentors have taken the role of my client. Prior to this project I had not worked with a functional language, Elixir or Phoenix. 
 

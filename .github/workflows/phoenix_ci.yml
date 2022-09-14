@@ -26,7 +26,9 @@ jobs:
           --health-retries 5
     steps:
       - name: Checkout Github repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2 
+        with:
+          fetch-depth: 2
      
       - name: Sets up an Erlang/OTP environment
         uses: erlef/setup-beam@v1
@@ -59,7 +61,7 @@ jobs:
       - name: Run tests
         run: mix coveralls.json
         env:
-          MIX_ENV: test --trace --slowest 10
+          MIX_ENV: test 
           DB_PASSWORD: postgres
           DB_HOST: postgres
 
