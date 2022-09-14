@@ -56,8 +56,15 @@ jobs:
       - name: Run static code analysis
         run: mix credo  
       
-      - name: Run Unit Tests
-        run: mix test --trace --slowest 10
+      - name: Run tests
+        run: mix coveralls.json
         env:
+          MIX_ENV: test --trace --slowest 10
           DB_PASSWORD: postgres
           DB_HOST: postgres
+
+      - name: Upload to Codecov
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov
