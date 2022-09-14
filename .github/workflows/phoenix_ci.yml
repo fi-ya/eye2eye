@@ -27,8 +27,8 @@ jobs:
     steps:
       - name: Checkout Github repo
         uses: actions/checkout@v2 
-          with:
-            fetch-depth: 2
+        with:
+          fetch-depth: 2
      
       - name: Sets up an Erlang/OTP environment
         uses: erlef/setup-beam@v1
